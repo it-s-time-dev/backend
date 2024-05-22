@@ -22,4 +22,12 @@ public class CoinAmount {
             throw new PlanearException("코인은 음수가 될 수 없습니다", HttpStatus.BAD_REQUEST);
         }
     }
+
+    public CoinAmount minus(int amount) {
+        return new CoinAmount(this.amount - amount);
+    }
+
+    public CoinAmount minus(CoinAmount coinAmount) {
+        return new CoinAmount(this.amount - coinAmount.amount);
+    }
 }

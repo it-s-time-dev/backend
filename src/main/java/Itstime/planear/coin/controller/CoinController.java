@@ -14,7 +14,7 @@ public class CoinController {
     private final CoinService coinService;
 
     @GetMapping("/user/coin")
-    public ApiResponse<CoinAmountResponse> getCoinAmount(@RequestHeader(name = "user-no") Long memberId) {
+    public ApiResponse<CoinAmountResponse> getCoinAmount(@RequestHeader(name = "user-no", required = false) Long memberId) {
         return ApiResponse.success(coinService.getCoinAmount(memberId));
     }
 }
