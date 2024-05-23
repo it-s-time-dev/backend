@@ -10,21 +10,28 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class ScheduleController {
     private final ScheduleService scheduleService;
 
+    // 일정 추가
     @PostMapping("/schedule")
     public ApiResponse<ScheduleResponseDTO.ScheduleCreateDTO> create(
             @RequestBody ScheduleRequestDTO.ScheduleCreateDTO scheduleCreateDTO,
             @RequestHeader("memberId") Long memberId) throws PlanearException {
         ScheduleResponseDTO.ScheduleCreateDTO result = scheduleService.create(memberId, scheduleCreateDTO);
+        return ApiResponse.success(result);
+    }
+    // 일정 수정
+    @PutMapping("/schedule/{scheduleId}")
+    public ApiResponse<ScheduleResponseDTO.ScheduleUpdateDTO> update(
+            @PathVariable("scheduleId") Long scheduleId,
+            @RequestBody ScheduleRequestDTO.ScheduleUpdateDTO scheduleUpdateDTO,
+            @RequestHeader("memberId") Long memberId) throws PlanearException {
+        ScheduleResponseDTO.ScheduleUpdateDTO result = scheduleService.update(memberId,scheduleId,scheduleUpdateDTO);
         return ApiResponse.success(result);
     }
 }
