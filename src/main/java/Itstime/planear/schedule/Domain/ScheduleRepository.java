@@ -7,6 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule,Long> {
-    @Override
-    Optional<Schedule> findById(Long aLong);
+    Optional<Schedule> findById(Long id);
 }

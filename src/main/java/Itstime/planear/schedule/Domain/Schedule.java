@@ -14,14 +14,18 @@ public class Schedule extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name="title",nullable = false)
     private String title;
 
-    @Column
+    @Column(name ="startDate")
     private LocalDateTime startDate;
+    @Column(name ="endDate")
     private LocalDateTime endDate;
+    @Column(name ="detail")
     private String detail;
+    @Column(name ="reward")
     private int reward;
+    @Column(name ="Completion")
     private boolean Completion;
 
     @ManyToOne(fetch = FetchType.LAZY)
