@@ -17,9 +17,9 @@ public class Schedule extends BaseEntity {
     @Column(name="title",nullable = false)
     private String title;
 
-    @Column(name ="start")
+    @Column(name ="start",nullable = false)
     private LocalDate start;
-    @Column(name ="end")
+    @Column(name ="end",nullable = false)
     private LocalDate end;
     @Column(name ="detail")
     private String detail;
@@ -33,7 +33,7 @@ public class Schedule extends BaseEntity {
     private Member member; // 일대다 관계
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id",nullable = false)
     private Category category;
 
     protected Schedule() {
