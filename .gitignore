@@ -25,8 +25,7 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-src/main/resources/application.properties
-src/main/resources/application-local.properties
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -36,3 +35,7 @@ src/main/resources/application-local.properties
 
 ### VS Code ###
 .vscode/
+
+### Specific files to ignore ###
+src/main/resources/application.properties
+src/main/resources/application-local.properties
