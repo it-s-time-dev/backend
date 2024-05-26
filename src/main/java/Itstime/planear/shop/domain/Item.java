@@ -17,7 +17,6 @@ public class Item {
 
     private int price; // 가격
 
-    //@Enumerated(EnumType.ORDINAL) // db에는 숫자로 저장할지?
     @Enumerated(EnumType.STRING)
     private BodyPart bodyPart; // 부위
 
