@@ -11,6 +11,9 @@ jobs:
         run: |
           sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner/_work/backend
       - uses: actions/checkout@v3
+      - name: create resources folder if not exists
+        run: |
+          mkdir -p src/main/resources
       - name: set up application.properties
         run: |
           echo "${{ secrets.APPLICATION_PROPERTIES }}" > src/main/resources/application.properties
