@@ -1,4 +1,4 @@
-package Itstime.planear.member.controller;
+package Itstime.planear.member.dto;
 
 public record CreateMemberRequest(String name) {
 }

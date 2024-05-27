@@ -4,32 +4,29 @@ import Itstime.planear.common.ApiResponse;
 import Itstime.planear.schedule.DTO.ScheduleRequestDTO;
 import Itstime.planear.schedule.DTO.ScheduleResponseDTO;
 import Itstime.planear.schedule.Service.ScheduleService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 public class ScheduleController {
     private final ScheduleService scheduleService;
 
+    // 일정 추가
     @PostMapping("/schedule")
-    public ResponseEntity<?> create(@RequestBody ScheduleRequestDTO.ScheduleCreateDTO scheduleCreateDTO, HttpSession httpSession) {
-        try {
-            log.info("[ScheduleController] create");
-            Long memberId = (Long) httpSession.getAttribute("memberId");
-            ScheduleResponseDTO.ScheduleCreateDTO result = scheduleService.create(memberId,scheduleCreateDTO);
-            return ResponseEntity.ok().body(ApiResponse.success(result));
-        } catch (Exception e) {
-            log.info("[ERROR] Exception");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.fail("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요"));
-        }
+    public ApiResponse<ScheduleResponseDTO.ScheduleCreateDTO> create(
+            @RequestBody ScheduleRequestDTO.ScheduleCreateDTO scheduleCreateDTO,
+            @RequestHeader(value = "user-no",required = false) Long memberId) {
+        ScheduleResponseDTO.ScheduleCreateDTO result = scheduleService.create(memberId,scheduleCreateDTO);
+        return ApiResponse.success(result);
     }
-
+    // 일정 수정
+    @PutMapping("/schedule/{scheduleId}")
+    public ApiResponse<ScheduleResponseDTO.scheduleUpdateDTO> update(
+            @PathVariable("scheduleId") Long scheduleId,
+            @RequestBody ScheduleRequestDTO.scheduleUpdateDTO scheduleUpdateDTO,
+            @RequestHeader(value = "user-no",required = false) Long memberId) {
+        ScheduleResponseDTO.scheduleUpdateDTO result = scheduleService.update(memberId,scheduleId,scheduleUpdateDTO);
+        return ApiResponse.success(result);
+    }
 }
