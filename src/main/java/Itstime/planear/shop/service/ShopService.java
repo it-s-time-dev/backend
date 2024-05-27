@@ -38,22 +38,22 @@ public class ShopService {
 
     // 부위별 아이템 목록 조회
     public ApiResponse<ItemListResponseDto> itemListByCategory(Long categoryId, Long memberId){
-        if(existByMemberId(memberId)){
+        if(!existByMemberId(memberId)){
+            throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND);
+        }
+        else{
             BodyPart bodyPart = BodyPart.fromValue(categoryId.intValue());
             List<Item> itemList = itemRepository.findByBodyPart(bodyPart);
-            System.out.println(itemList);
             List<ItemListProcessDto> listProcessDto = itemList.stream()
                     .map(item -> ItemListProcessDto.builder()
                             .id(item.getId())
                             .url(item.getImg_url())
                             .price(item.getPrice())
-                            .has(wearingRepsitory.existsByMemberIdAndItem(memberId, item))
+                            .has(wearingRepsitory.existsByMemberIdAndItem(memberId, item))  // 추후 코드 리팩토링
                             .build()).collect(Collectors.toList());
         return ApiResponse.success(new ItemListResponseDto(listProcessDto));
         }
-        else{
-            throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND);
-        }
+
     }
 
 
