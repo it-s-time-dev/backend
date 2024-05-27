@@ -22,11 +22,11 @@ public class ScheduleController {
     }
     // 일정 수정
     @PutMapping("/schedule/{scheduleId}")
-    public ApiResponse<ScheduleResponseDTO.ScheduleUpdateDTO> update(
+    public ApiResponse<ScheduleResponseDTO.scheduleUpdateDTO> update(
             @PathVariable("scheduleId") Long scheduleId,
-            @RequestBody ScheduleRequestDTO.ScheduleUpdateDTO scheduleUpdateDTO,
+            @RequestBody ScheduleRequestDTO.scheduleUpdateDTO scheduleUpdateDTO,
             @RequestHeader(value = "user-no",required = false) Long memberId) {
-        ScheduleResponseDTO.ScheduleUpdateDTO result = scheduleService.update(memberId,scheduleId,scheduleUpdateDTO);
+        ScheduleResponseDTO.scheduleUpdateDTO result = scheduleService.update(memberId,scheduleId,scheduleUpdateDTO);
         return ApiResponse.success(result);
     }
 }

@@ -25,7 +25,7 @@ public class ScheduleResponseDTO {
     }
     // 일정 수정
     @Getter
-    public static class ScheduleUpdateDTO {
+    public static class scheduleUpdateDTO {
         private Long id;
         private String title;
 
@@ -34,15 +34,15 @@ public class ScheduleResponseDTO {
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate end;
 
-        private Category category;
+        private Long categoryId;
         private String detail;
 
-        public ScheduleUpdateDTO(Schedule schedule) {
+        public scheduleUpdateDTO(Schedule schedule) {
             this.id = schedule.getId();
             this.title = schedule.getTitle();
             this.start = schedule.getStart();
             this.end = schedule.getEnd();
-            this.category = schedule.getCategory();
+            this.categoryId = schedule.getCategory().getId();
             this.detail = schedule.getDetail();
         }
     }

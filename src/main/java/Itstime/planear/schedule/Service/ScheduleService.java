@@ -13,8 +13,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -35,29 +35,43 @@ public class ScheduleService {
         LocalDate start = (scheduleCreateDTO.getStart() != null) ? scheduleCreateDTO.getStart() : LocalDate.now();
         LocalDate end = (scheduleCreateDTO.getEnd() != null) ? scheduleCreateDTO.getEnd() : LocalDate.now();
 
-        Schedule schedule = new Schedule(scheduleCreateDTO.getTitle(), findMember, ChoiceColor, start, end,scheduleCreateDTO.getDetail());
+        Schedule schedule = new Schedule(scheduleCreateDTO.getTitle(), findMember, ChoiceColor, start, end, scheduleCreateDTO.getDetail());
 
         scheduleRepository.save(schedule);
 
         return new ScheduleResponseDTO.ScheduleCreateDTO(schedule);
     }
+
     // 일정 수정
     @Transactional
-    public ScheduleResponseDTO.ScheduleUpdateDTO update(Long memberId, Long scheduleId, ScheduleRequestDTO.ScheduleUpdateDTO scheduleUpdateDTO) {
+    public ScheduleResponseDTO.scheduleUpdateDTO update(Long memberId, Long scheduleId, ScheduleRequestDTO.scheduleUpdateDTO scheduleUpdateDTO) {
         Member findMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요", HttpStatus.NOT_FOUND));
 
         Schedule findSchedule = scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
-        // map 사용하는게 더 낫나..?
-        findSchedule.UpdateTitle(scheduleUpdateDTO.getTitle());
-        findSchedule.UpdateDetail(scheduleUpdateDTO.getDetail());
-        findSchedule.UpdateStart(scheduleUpdateDTO.getStart());
-        findSchedule.UpdateEnd(scheduleUpdateDTO.getEnd());
-        findSchedule.UpdateCategory(scheduleUpdateDTO.getCategory());
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요", HttpStatus.NOT_FOUND));
+        // 해당 회원의 스케줄이 맞는지 확인
+        checkMemberRelationSchedule(findMember, findSchedule);
 
-        return new ScheduleResponseDTO.ScheduleUpdateDTO(findSchedule);
+        findSchedule.updateTitle(scheduleUpdateDTO.getTitle());
+        findSchedule.updateDetail(scheduleUpdateDTO.getDetail());
+        findSchedule.updateStart(scheduleUpdateDTO.getStart());
+        findSchedule.updateEnd(scheduleUpdateDTO.getEnd());
+
+        // scheduleUpdateDTO에 카테고리 있다면 해당 카테고리로 업데이트하도록
+        if (scheduleUpdateDTO.getCategory() != null) {
+            Category category = categoryRepository.findById(scheduleUpdateDTO.getCategory().getId())
+                    .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요", HttpStatus.NOT_FOUND));
+            findSchedule.updateCategory(category);
+        }
+
+        return new ScheduleResponseDTO.scheduleUpdateDTO(findSchedule);
     }
 
+    private static void checkMemberRelationSchedule(Member findMember, Schedule findSchedule) {
+        if (!Objects.equals(findMember.getId(), findSchedule.getMember().getId())) {
+            throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.FORBIDDEN);
+        }
+    }
 
 }
