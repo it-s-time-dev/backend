@@ -17,9 +17,9 @@ public class Schedule extends BaseEntity {
     @Column(name="title",nullable = false)
     private String title;
 
-    @Column(name ="start",nullable = false)
+    @Column(name ="start")
     private LocalDate start;
-    @Column(name ="end",nullable = false)
+    @Column(name ="end")
     private LocalDate end;
     @Column(name ="detail")
     private String detail;
@@ -33,15 +33,19 @@ public class Schedule extends BaseEntity {
     private Member member; // 일대다 관계
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id",nullable = false)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     protected Schedule() {
 
     }
-    public Schedule(String title, Member member) {
+    public Schedule(String title, Member member,Category category,LocalDate start,LocalDate end,String detail) {
         this.title = title;
         this.member = member;
+        this.start = start;
+        this.end = end;
+        this.category = category;
+        this.detail = detail;
     }
     // 업데이트 관련 메서드
     public void UpdateTitle(String title ) {

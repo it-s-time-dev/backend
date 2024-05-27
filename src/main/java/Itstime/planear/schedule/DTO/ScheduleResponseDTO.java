@@ -14,10 +14,12 @@ public class ScheduleResponseDTO {
     public static class ScheduleCreateDTO {
         private Long id;
         private String title;
+        private Category category;
 
         public ScheduleCreateDTO(Schedule schedule) {
             this.id = schedule.getId();
             this.title = schedule.getTitle();
+            this.category = schedule.getCategory();
 
         }
     }

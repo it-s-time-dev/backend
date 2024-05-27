@@ -1,10 +1,8 @@
 package Itstime.planear.schedule.DTO;
 
 import Itstime.planear.schedule.Domain.Category;
-import Itstime.planear.schedule.Domain.Schedule;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 
@@ -19,7 +17,7 @@ public class ScheduleRequestDTO {
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate end;
 
-        private String category;
+        private Long categoryId;
         private String detail;
     }
 
