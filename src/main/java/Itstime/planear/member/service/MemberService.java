@@ -2,13 +2,14 @@ package Itstime.planear.member.service;
 
 import Itstime.planear.common.ApiResponse;
 import Itstime.planear.exception.PlanearException;
-import Itstime.planear.member.controller.CreateMemberRequest;
-import Itstime.planear.member.controller.CreateMemberResponse;
 import Itstime.planear.member.domain.Member;
 import Itstime.planear.member.domain.MemberName;
 import Itstime.planear.member.domain.MemberRepository;
 import Itstime.planear.member.dto.CheckMemberNameRequest;
 import Itstime.planear.member.dto.CheckMemberNameResponse;
+
+import Itstime.planear.member.dto.CreateMemberRequest;
+import Itstime.planear.member.dto.CreateMemberResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
