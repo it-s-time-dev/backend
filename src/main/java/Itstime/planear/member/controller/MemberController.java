@@ -3,6 +3,8 @@ package Itstime.planear.member.controller;
 import Itstime.planear.common.ApiResponse;
 import Itstime.planear.member.dto.CheckMemberNameRequest;
 import Itstime.planear.member.dto.CheckMemberNameResponse;
+import Itstime.planear.member.dto.CreateMemberRequest;
+import Itstime.planear.member.dto.CreateMemberResponse;
 import Itstime.planear.member.service.MemberService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
