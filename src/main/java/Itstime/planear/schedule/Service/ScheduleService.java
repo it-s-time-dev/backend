@@ -59,8 +59,8 @@ public class ScheduleService {
         findSchedule.updateEnd(scheduleUpdateDTO.getEnd());
 
         // scheduleUpdateDTO에 카테고리 있다면 해당 카테고리로 업데이트하도록
-        if (scheduleUpdateDTO.getCategory() != null) {
-            Category category = categoryRepository.findById(scheduleUpdateDTO.getCategory().getId())
+        if (scheduleUpdateDTO.getCategoryId() != null) {
+            Category category = categoryRepository.findById(scheduleUpdateDTO.getCategoryId())
                     .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요", HttpStatus.NOT_FOUND));
             findSchedule.updateCategory(category);
         }

@@ -31,7 +31,7 @@ public class ScheduleRequestDTO {
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate end;
 
-        private Category category;
+        private Long categoryId;
         private String detail;
     }
 }
