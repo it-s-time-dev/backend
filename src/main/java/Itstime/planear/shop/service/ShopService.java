@@ -8,6 +8,8 @@ import Itstime.planear.member.domain.MemberRepository;
 import Itstime.planear.shop.domain.BodyPart;
 import Itstime.planear.shop.domain.Item;
 import Itstime.planear.shop.dto.process.ItemListProcessDto;
+import Itstime.planear.shop.dto.request.CreateItemRequestDto;
+import Itstime.planear.shop.dto.response.CreateItemResponseDto;
 import Itstime.planear.shop.dto.response.ItemListResponseDto;
 import Itstime.planear.shop.repository.ItemRepository;
 import Itstime.planear.shop.repository.WearingRepsitory;
@@ -53,8 +55,13 @@ public class ShopService {
                             .build()).collect(Collectors.toList());
         return ApiResponse.success(new ItemListResponseDto(listProcessDto));
         }
-
     }
 
+    public ApiResponse<CreateItemResponseDto> createItem(CreateItemRequestDto dto){
+        BodyPart bodyPart = BodyPart.fromValue(dto.bodyPart().intValue()); // BodyPart Long -> 객체로 변환
+        Item newItem = new Item(dto.price(), bodyPart, dto.img_url());
+        itemRepository.save(newItem);
+        return ApiResponse.success(new CreateItemResponseDto("success"));
+    }
 
 }
