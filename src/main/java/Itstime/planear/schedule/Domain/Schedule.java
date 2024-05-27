@@ -31,11 +31,11 @@ public class Schedule extends BaseEntity {
     private boolean Completion;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "member_id")
     private Member member; // 일대다 관계
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryId")
+    @JoinColumn(name = "category_id")
     private Category category;
 
     public Schedule(String title, Member member,Category category,LocalDate start,LocalDate end,String detail) {
