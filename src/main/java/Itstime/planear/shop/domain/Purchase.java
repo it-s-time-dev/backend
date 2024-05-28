@@ -25,7 +25,8 @@ public class Purchase {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    private BodyPart bodyPart; // 부위 (구매내역 중 카테고리 필터링 역할)
+    @Enumerated(EnumType.STRING)
+    private BodyPart bodyPart;
 
     public Purchase(Member member, Item item, BodyPart bodyPart) {
         this.member = member;

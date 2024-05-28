@@ -7,11 +7,15 @@ import Itstime.planear.member.domain.Member;
 import Itstime.planear.member.domain.MemberRepository;
 import Itstime.planear.shop.domain.BodyPart;
 import Itstime.planear.shop.domain.Item;
+import Itstime.planear.shop.domain.Purchase;
 import Itstime.planear.shop.dto.process.ItemListProcessDto;
+import Itstime.planear.shop.dto.request.BuyItemRequestDto;
 import Itstime.planear.shop.dto.request.CreateItemRequestDto;
+import Itstime.planear.shop.dto.response.BuyItemResponseDto;
 import Itstime.planear.shop.dto.response.CreateItemResponseDto;
 import Itstime.planear.shop.dto.response.ItemListResponseDto;
 import Itstime.planear.shop.repository.ItemRepository;
+import Itstime.planear.shop.repository.PurchaseRepository;
 import Itstime.planear.shop.repository.WearingRepsitory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +31,7 @@ public class ShopService {
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
     private final WearingRepsitory wearingRepsitory;
+    private final PurchaseRepository purchaseRepository;
 
     public Member checkByMemberId(Long memberId){ // member 객체 검색
         return memberRepository.findById(memberId)
@@ -62,6 +67,20 @@ public class ShopService {
         Item newItem = new Item(dto.price(), bodyPart, dto.img_url());
         itemRepository.save(newItem);
         return ApiResponse.success(new CreateItemResponseDto("success"));
+    }
+
+    public ApiResponse<BuyItemResponseDto> buyItem(Long memberId, BuyItemRequestDto dto){
+        Member member = checkByMemberId(memberId); // 멤버 확인
+        // 상점에 존재하는 아이템인지 확인
+        Item item = itemRepository.findById(dto.itemId())
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
+        // 기존에 구매한 아이템인지 구매내역에서 확인
+        if (purchaseRepository.existsByMemberIdAndItemId(member.getId(), dto.itemId())){
+            throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.BAD_REQUEST);
+        }
+        BodyPart bodyPart = item.getBodyPart();
+        purchaseRepository.save(new Purchase(member, item, bodyPart));
+        return ApiResponse.success(new BuyItemResponseDto("success"));
     }
 
 }

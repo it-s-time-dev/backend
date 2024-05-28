@@ -1,7 +1,9 @@
 package Itstime.planear.shop.controller;
 
 import Itstime.planear.common.ApiResponse;
+import Itstime.planear.shop.dto.request.BuyItemRequestDto;
 import Itstime.planear.shop.dto.request.CreateItemRequestDto;
+import Itstime.planear.shop.dto.response.BuyItemResponseDto;
 import Itstime.planear.shop.dto.response.CreateItemResponseDto;
 import Itstime.planear.shop.dto.response.ItemListResponseDto;
 import Itstime.planear.shop.service.ShopService;
@@ -36,5 +38,12 @@ public class ShopController {
         return shopService.createItem(dto);
     }
 
-
+    @PostMapping("/store/buy")
+    @Operation(summary = "아이템 구매", description = "FACE(1), HAIR(2), TOP(3), BOTTOM(4), SHOES(5), ACCESSORY(6)")
+    public ApiResponse<BuyItemResponseDto> buyItem(
+            @RequestHeader(name = "user-no", required = false) Long memberId,
+            @RequestBody @Valid BuyItemRequestDto dto
+    ){
+        return shopService.buyItem(memberId, dto);
+    }
 }
