@@ -9,6 +9,19 @@ import java.time.LocalDate;
 
 @Getter
 public class ScheduleResponseDTO {
+    // 일정 완료
+    @Getter
+    public static class scheduleCompleteDTO {
+        private Long id;
+        private String title;
+        private boolean completion;
+
+        public scheduleCompleteDTO(Schedule schedule) {
+            this.id = schedule.getId();
+            this.title = schedule.getTitle();
+            this.completion = schedule.isCompletion();
+        }
+    }
     // 일정 추가
     @Getter
     public static class ScheduleCreateDTO {
@@ -23,6 +36,7 @@ public class ScheduleResponseDTO {
 
         }
     }
+
     // 일정 수정
     @Getter
     public static class scheduleUpdateDTO {

@@ -29,4 +29,11 @@ public class ScheduleController {
         ScheduleResponseDTO.scheduleUpdateDTO result = scheduleService.update(memberId,scheduleId,scheduleUpdateDTO);
         return ApiResponse.success(result);
     }
+    // 일정 완료
+    @PostMapping("/schedule/complete")
+    public ApiResponse<ScheduleResponseDTO.scheduleCompleteDTO> complete(@RequestBody ScheduleRequestDTO.scheduleCompleteDTO scheduleCompleteDTO,
+            @RequestHeader(value = "user-no",required = false) Long memberId){
+                ScheduleResponseDTO.scheduleCompleteDTO result = scheduleService.complete(memberId, scheduleCompleteDTO.getScheduleId());
+                return ApiResponse.success(result);
+    }
 }

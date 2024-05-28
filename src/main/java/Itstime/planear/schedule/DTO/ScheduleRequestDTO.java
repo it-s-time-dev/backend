@@ -34,4 +34,8 @@ public class ScheduleRequestDTO {
         private Long categoryId;
         private String detail;
     }
+    @Getter
+    public static class scheduleCompleteDTO {
+        private Long scheduleId;
+    }
 }
