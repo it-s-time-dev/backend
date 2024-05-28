@@ -9,11 +9,13 @@ import Itstime.planear.shop.domain.BodyPart;
 import Itstime.planear.shop.domain.Item;
 import Itstime.planear.shop.domain.Purchase;
 import Itstime.planear.shop.dto.process.ItemListProcessDto;
+import Itstime.planear.shop.dto.process.MyItemProcessDto;
 import Itstime.planear.shop.dto.request.BuyItemRequestDto;
 import Itstime.planear.shop.dto.request.CreateItemRequestDto;
 import Itstime.planear.shop.dto.response.BuyItemResponseDto;
 import Itstime.planear.shop.dto.response.CreateItemResponseDto;
 import Itstime.planear.shop.dto.response.ItemListResponseDto;
+import Itstime.planear.shop.dto.response.MyItemResponseDto;
 import Itstime.planear.shop.repository.ItemRepository;
 import Itstime.planear.shop.repository.PurchaseRepository;
 import Itstime.planear.shop.repository.WearingRepsitory;
@@ -81,6 +83,20 @@ public class ShopService {
         BodyPart bodyPart = item.getBodyPart();
         purchaseRepository.save(new Purchase(member, item, bodyPart));
         return ApiResponse.success(new BuyItemResponseDto("success"));
+    }
+
+    public ApiResponse<MyItemResponseDto> myItemByCategoryId(Long memberId, Long categoryId){
+        Member member = checkByMemberId(memberId); // 멤버 확인
+        // 유효한 카테고리(부위) 인지 확인
+        BodyPart bodyPart = BodyPart.fromValue(categoryId.intValue());
+        List<Purchase> myItemList = purchaseRepository.findByMemberIdAndBodyPart(member.getId(), bodyPart);
+        List<MyItemProcessDto> myItemResponseDto = myItemList.stream().map(purchase ->
+                MyItemProcessDto.builder()
+                        .id(purchase.getItem().getId())
+                        .url(purchase.getItem().getImg_url())
+                        .bodyPart(purchase.getBodyPart())
+                        .build()).collect(Collectors.toList());
+        return ApiResponse.success(new MyItemResponseDto(myItemResponseDto));
     }
 
 }
