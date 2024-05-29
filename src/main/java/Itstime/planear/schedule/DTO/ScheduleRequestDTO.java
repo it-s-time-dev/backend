@@ -22,7 +22,7 @@ public class ScheduleRequestDTO {
     }
 
     @Getter
-    public static class scheduleUpdateDTO {
+    public static class ScheduleUpdateDTO {
         private String title;
 
         @JsonFormat(pattern = "yyyy-MM-dd")
@@ -33,5 +33,9 @@ public class ScheduleRequestDTO {
 
         private Long categoryId;
         private String detail;
+    }
+    @Getter
+    public static class ScheduleCompleteDTO {
+        private Long scheduleId;
     }
 }

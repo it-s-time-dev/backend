@@ -67,7 +67,19 @@ public class ScheduleService {
 
         return new ScheduleResponseDTO.scheduleUpdateDTO(findSchedule);
     }
+    // 일정 완료
+    @Transactional
+    public ScheduleResponseDTO.scheduleCompleteDTO complete(Long memberId,Long scheduleId) {
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요",HttpStatus.NOT_FOUND));
+        Schedule findSchedule = scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요",HttpStatus.NOT_FOUND));
 
+        checkMemberRelationSchedule(findMember,findSchedule);
+        findSchedule.updateScheduleStatus(true);
+
+        return new ScheduleResponseDTO.scheduleCompleteDTO(findSchedule);
+    }
     private static void checkMemberRelationSchedule(Member findMember, Schedule findSchedule) {
         if (!Objects.equals(findMember.getId(), findSchedule.getMember().getId())) {
             throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.FORBIDDEN);

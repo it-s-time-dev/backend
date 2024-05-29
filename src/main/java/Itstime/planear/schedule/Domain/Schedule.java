@@ -28,7 +28,7 @@ public class Schedule extends BaseEntity {
     @Column(name ="reward")
     private int reward;
     @Column(name ="Completion")
-    private boolean Completion;
+    private boolean completion = false; //초기 상태 설정
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -37,6 +37,7 @@ public class Schedule extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
 
     public Schedule(String title, Member member,Category category,LocalDate start,LocalDate end,String detail) {
         this.title = title;
@@ -61,6 +62,10 @@ public class Schedule extends BaseEntity {
     }
     public void updateCategory(Category category ) {
         this.category = category;
+    }
+    // 상태 변경 메서드
+    public void updateScheduleStatus(Boolean completion) {
+        this.completion = completion != null ? completion : false; // 인자 값 true로 주면 상태변경하도록
     }
 
 }
