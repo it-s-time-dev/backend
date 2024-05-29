@@ -6,6 +6,7 @@ import Itstime.planear.shop.dto.request.CreateItemRequestDto;
 import Itstime.planear.shop.dto.response.BuyItemResponseDto;
 import Itstime.planear.shop.dto.response.CreateItemResponseDto;
 import Itstime.planear.shop.dto.response.ItemListResponseDto;
+import Itstime.planear.shop.dto.response.MyItemResponseDto;
 import Itstime.planear.shop.service.ShopService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,5 +46,14 @@ public class ShopController {
             @RequestBody @Valid BuyItemRequestDto dto
     ){
         return shopService.buyItem(memberId, dto);
+    }
+
+    @GetMapping("/store/me")
+    @Operation(summary = "내 아이템 카테고리별 조회", description = "FACE(1), HAIR(2), TOP(3), BOTTOM(4), SHOES(5), ACCESSORY(6)")
+    public ApiResponse<MyItemResponseDto> myItemByCategoryId(
+            @RequestParam(name = "categoryId") Long categoryId,
+            @RequestHeader(name = "user-no") Long memberId
+    ){
+        return shopService.myItemByCategoryId(memberId,categoryId);
     }
 }
