@@ -3,10 +3,7 @@ package Itstime.planear.shop.controller;
 import Itstime.planear.common.ApiResponse;
 import Itstime.planear.shop.dto.request.BuyItemRequestDto;
 import Itstime.planear.shop.dto.request.CreateItemRequestDto;
-import Itstime.planear.shop.dto.response.BuyItemResponseDto;
-import Itstime.planear.shop.dto.response.CreateItemResponseDto;
-import Itstime.planear.shop.dto.response.ItemListResponseDto;
-import Itstime.planear.shop.dto.response.MyItemResponseDto;
+import Itstime.planear.shop.dto.response.*;
 import Itstime.planear.shop.service.ShopService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -55,5 +52,13 @@ public class ShopController {
             @RequestHeader(name = "user-no") Long memberId
     ){
         return shopService.myItemByCategoryId(memberId,categoryId);
+    }
+
+    @GetMapping("/me")
+    @Operation(summary = "현재 입고있는 아이템 목록 조회", description = "현재 입고있는 부위별 아이템 목록 조회 api")
+    public ApiResponse<WearingItemListResponseDto> wearingItems(
+            @RequestHeader(name = "user-no") Long memberId
+    ){
+        return shopService.wearingItems(memberId);
     }
 }
