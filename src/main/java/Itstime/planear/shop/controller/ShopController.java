@@ -1,6 +1,7 @@
 package Itstime.planear.shop.controller;
 
 import Itstime.planear.common.ApiResponse;
+import Itstime.planear.shop.dto.request.ApplyItemRequestDto;
 import Itstime.planear.shop.dto.request.BuyItemRequestDto;
 import Itstime.planear.shop.dto.request.CreateItemRequestDto;
 import Itstime.planear.shop.dto.response.*;
@@ -60,5 +61,14 @@ public class ShopController {
             @RequestHeader(name = "user-no") Long memberId
     ){
         return shopService.wearingItems(memberId);
+    }
+
+    @PostMapping("/me/wear")
+    @Operation(summary = "아이템 착용하기", description = "아이템 착용하기")
+    public ApiResponse<ApplyItemResponseDto> applyItem(
+            @RequestHeader(name = "user-no") Long memberId,
+            @RequestBody ApplyItemRequestDto dto
+    ){
+        return shopService.applyItem(memberId, dto);
     }
 }

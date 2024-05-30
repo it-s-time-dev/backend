@@ -36,4 +36,9 @@ public class Wearing {
         this.item = item;
         this.bodyPart = bodyPart;
     }
+
+    public void updateWearingItem(Item item){
+        this.item = item;
+        this.bodyPart = item.getBodyPart();
+    }
 }

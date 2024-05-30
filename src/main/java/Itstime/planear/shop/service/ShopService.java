@@ -12,6 +12,7 @@ import Itstime.planear.shop.domain.Wearing;
 import Itstime.planear.shop.dto.process.ItemListProcessDto;
 import Itstime.planear.shop.dto.process.MyItemProcessDto;
 import Itstime.planear.shop.dto.process.WearingItemProcessDto;
+import Itstime.planear.shop.dto.request.ApplyItemRequestDto;
 import Itstime.planear.shop.dto.request.BuyItemRequestDto;
 import Itstime.planear.shop.dto.request.CreateItemRequestDto;
 import Itstime.planear.shop.dto.response.*;
@@ -23,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -107,6 +109,24 @@ public class ShopService {
                 .categoryId((long) wearing.getBodyPart().getValue())
                 .build()).toList();
         return ApiResponse.success(new WearingItemListResponseDto(responseDto));
+    }
+
+    public ApiResponse<ApplyItemResponseDto> applyItem(Long memberId, ApplyItemRequestDto dto){
+        Member member = checkByMemberId(memberId); // 멤버 확인
+        Item item = itemRepository.findById(dto.itemId()) // 아이템 확인
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
+        if (!purchaseRepository.existsByMemberIdAndItemId(member.getId(), item.getId())){ // 구매 내역 확인
+            throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND);
+        }
+        Optional<Wearing> wearingItem = wearingRepsitory.findByMemberIdAndBodyPart(member.getId(), item.getBodyPart());
+        if (wearingItem.isEmpty()){
+            wearingRepsitory.save(new Wearing(member, item, item.getBodyPart()));
+        }else {
+            Wearing wearing = wearingItem.get();
+            wearing.updateWearingItem(item);
+            wearingRepsitory.save(wearing);
+        }
+        return ApiResponse.success(new ApplyItemResponseDto("success"));
     }
 
 }
