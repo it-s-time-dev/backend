@@ -24,14 +24,14 @@ public class ScheduleController {
     @PutMapping("/schedule/{scheduleId}")
     public ApiResponse<ScheduleResponseDTO.scheduleUpdateDTO> update(
             @PathVariable("scheduleId") Long scheduleId,
-            @RequestBody ScheduleRequestDTO.scheduleUpdateDTO scheduleUpdateDTO,
+            @RequestBody ScheduleRequestDTO.ScheduleUpdateDTO scheduleUpdateDTO,
             @RequestHeader(value = "user-no",required = false) Long memberId) {
         ScheduleResponseDTO.scheduleUpdateDTO result = scheduleService.update(memberId,scheduleId,scheduleUpdateDTO);
         return ApiResponse.success(result);
     }
     // 일정 완료
     @PostMapping("/schedule/complete")
-    public ApiResponse<ScheduleResponseDTO.scheduleCompleteDTO> complete(@RequestBody ScheduleRequestDTO.scheduleCompleteDTO scheduleCompleteDTO,
+    public ApiResponse<ScheduleResponseDTO.scheduleCompleteDTO> complete(@RequestBody ScheduleRequestDTO.ScheduleCompleteDTO scheduleCompleteDTO,
             @RequestHeader(value = "user-no",required = false) Long memberId){
                 ScheduleResponseDTO.scheduleCompleteDTO result = scheduleService.complete(memberId, scheduleCompleteDTO.getScheduleId());
                 return ApiResponse.success(result);
