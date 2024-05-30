@@ -8,14 +8,13 @@ import Itstime.planear.member.domain.MemberRepository;
 import Itstime.planear.shop.domain.BodyPart;
 import Itstime.planear.shop.domain.Item;
 import Itstime.planear.shop.domain.Purchase;
+import Itstime.planear.shop.domain.Wearing;
 import Itstime.planear.shop.dto.process.ItemListProcessDto;
 import Itstime.planear.shop.dto.process.MyItemProcessDto;
+import Itstime.planear.shop.dto.process.WearingItemProcessDto;
 import Itstime.planear.shop.dto.request.BuyItemRequestDto;
 import Itstime.planear.shop.dto.request.CreateItemRequestDto;
-import Itstime.planear.shop.dto.response.BuyItemResponseDto;
-import Itstime.planear.shop.dto.response.CreateItemResponseDto;
-import Itstime.planear.shop.dto.response.ItemListResponseDto;
-import Itstime.planear.shop.dto.response.MyItemResponseDto;
+import Itstime.planear.shop.dto.response.*;
 import Itstime.planear.shop.repository.ItemRepository;
 import Itstime.planear.shop.repository.PurchaseRepository;
 import Itstime.planear.shop.repository.WearingRepsitory;
@@ -97,6 +96,17 @@ public class ShopService {
                         .bodyPart(purchase.getBodyPart())
                         .build()).collect(Collectors.toList());
         return ApiResponse.success(new MyItemResponseDto(myItemResponseDto));
+    }
+
+    public ApiResponse<WearingItemListResponseDto> wearingItems(Long memberId){
+        Member member = checkByMemberId(memberId); // 멤버 확인
+        List<Wearing> wearingList = wearingRepsitory.findByMemberId(member.getId());
+        List<WearingItemProcessDto> responseDto = wearingList.stream().map(wearing -> WearingItemProcessDto.builder()
+                .id(wearing.getItem().getId())
+                .url(wearing.getItem().getImg_url())
+                .categoryId((long) wearing.getBodyPart().getValue())
+                .build()).toList();
+        return ApiResponse.success(new WearingItemListResponseDto(responseDto));
     }
 
 }
