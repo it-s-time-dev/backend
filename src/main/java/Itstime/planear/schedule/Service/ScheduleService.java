@@ -80,6 +80,19 @@ public class ScheduleService {
 
         return new ScheduleResponseDTO.ScheduleCompleteDTO(findSchedule);
     }
+    // 일정 삭제
+    @Transactional
+    public ScheduleResponseDTO.ScheduleDeleteDTO delete(Long memberId,Long scheduleId) {
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요",HttpStatus.NOT_FOUND));
+        Schedule findSchedule =scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요",HttpStatus.NOT_FOUND));
+
+        checkMemberRelationSchedule(findMember,findSchedule);
+        scheduleRepository.deleteById(scheduleId);
+        return new ScheduleResponseDTO.ScheduleDeleteDTO(scheduleId);
+
+    }
     private static void checkMemberRelationSchedule(Member findMember, Schedule findSchedule) {
         if (!Objects.equals(findMember.getId(), findSchedule.getMember().getId())) {
             throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.FORBIDDEN);

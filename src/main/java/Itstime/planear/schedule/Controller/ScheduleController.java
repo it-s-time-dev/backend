@@ -36,4 +36,11 @@ public class ScheduleController {
                 ScheduleResponseDTO.ScheduleCompleteDTO result = scheduleService.complete(memberId, scheduleCompleteDTO.getScheduleId());
                 return ApiResponse.success(result);
     }
+    // 일정 삭제
+    @DeleteMapping("/schedule/{scheduleId}")
+    public ApiResponse<ScheduleResponseDTO.ScheduleDeleteDTO> delete(@PathVariable("scheduleId")Long scheduleId,
+                                                                     @RequestHeader(value = "user-no",required = false) Long memberId) {
+        ScheduleResponseDTO.ScheduleDeleteDTO result = scheduleService.delete(memberId,scheduleId);
+        return ApiResponse.success(result);
+    }
 }

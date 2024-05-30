@@ -60,4 +60,13 @@ public class ScheduleResponseDTO {
             this.detail = schedule.getDetail();
         }
     }
+    // 일정 삭제
+    @Getter
+    public static class ScheduleDeleteDTO {
+        private Long id;
+
+        public ScheduleDeleteDTO(Long id) {
+            this.id = id;
+        }
+    }
 }
