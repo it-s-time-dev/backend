@@ -22,18 +22,25 @@ public class ScheduleController {
     }
     // 일정 수정
     @PutMapping("/schedule/{scheduleId}")
-    public ApiResponse<ScheduleResponseDTO.scheduleUpdateDTO> update(
+    public ApiResponse<ScheduleResponseDTO.ScheduleUpdateDTO> update(
             @PathVariable("scheduleId") Long scheduleId,
             @RequestBody ScheduleRequestDTO.ScheduleUpdateDTO scheduleUpdateDTO,
             @RequestHeader(value = "user-no",required = false) Long memberId) {
-        ScheduleResponseDTO.scheduleUpdateDTO result = scheduleService.update(memberId,scheduleId,scheduleUpdateDTO);
+        ScheduleResponseDTO.ScheduleUpdateDTO result = scheduleService.update(memberId,scheduleId,scheduleUpdateDTO);
         return ApiResponse.success(result);
     }
     // 일정 완료
     @PostMapping("/schedule/complete")
-    public ApiResponse<ScheduleResponseDTO.scheduleCompleteDTO> complete(@RequestBody ScheduleRequestDTO.ScheduleCompleteDTO scheduleCompleteDTO,
+    public ApiResponse<ScheduleResponseDTO.ScheduleCompleteDTO> complete(@RequestBody ScheduleRequestDTO.ScheduleCompleteDTO scheduleCompleteDTO,
             @RequestHeader(value = "user-no",required = false) Long memberId){
-                ScheduleResponseDTO.scheduleCompleteDTO result = scheduleService.complete(memberId, scheduleCompleteDTO.getScheduleId());
+                ScheduleResponseDTO.ScheduleCompleteDTO result = scheduleService.complete(memberId, scheduleCompleteDTO.getScheduleId());
                 return ApiResponse.success(result);
+    }
+    // 일정 삭제
+    @DeleteMapping("/schedule/{scheduleId}")
+    public ApiResponse<ScheduleResponseDTO.ScheduleDeleteDTO> delete(@PathVariable("scheduleId")Long scheduleId,
+                                                                     @RequestHeader(value = "user-no",required = false) Long memberId) {
+        ScheduleResponseDTO.ScheduleDeleteDTO result = scheduleService.delete(memberId,scheduleId);
+        return ApiResponse.success(result);
     }
 }
