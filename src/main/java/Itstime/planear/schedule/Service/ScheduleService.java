@@ -44,7 +44,7 @@ public class ScheduleService {
 
     // 일정 수정
     @Transactional
-    public ScheduleResponseDTO.scheduleUpdateDTO update(Long memberId, Long scheduleId, ScheduleRequestDTO.scheduleUpdateDTO scheduleUpdateDTO) {
+    public ScheduleResponseDTO.scheduleUpdateDTO update(Long memberId, Long scheduleId, ScheduleRequestDTO.ScheduleUpdateDTO scheduleUpdateDTO) {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요", HttpStatus.NOT_FOUND));
 
