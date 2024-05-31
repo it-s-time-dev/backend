@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -44,7 +46,7 @@ public class ScheduleService {
 
     // 일정 수정
     @Transactional
-    public ScheduleResponseDTO.scheduleUpdateDTO update(Long memberId, Long scheduleId, ScheduleRequestDTO.scheduleUpdateDTO scheduleUpdateDTO) {
+    public ScheduleResponseDTO.ScheduleUpdateDTO update(Long memberId, Long scheduleId, ScheduleRequestDTO.ScheduleUpdateDTO scheduleUpdateDTO) {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요", HttpStatus.NOT_FOUND));
 
@@ -65,7 +67,7 @@ public class ScheduleService {
             findSchedule.updateCategory(category);
         }
 
-        return new ScheduleResponseDTO.scheduleUpdateDTO(findSchedule);
+        return new ScheduleResponseDTO.ScheduleUpdateDTO(findSchedule);
     }
     // 일정 완료
     @Transactional
@@ -80,6 +82,22 @@ public class ScheduleService {
 
         return new ScheduleResponseDTO.scheduleCompleteDTO(findSchedule);
     }
+    // 먼슬리 일정 조회
+    @Transactional
+    public List<ScheduleResponseDTO.ScheduleFindAllDTO> findAll(Long memberId, LocalDate startInclusive, LocalDate endInclusive) {
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
+
+        List<Schedule> list = scheduleRepository.findAllByMemberAndStartBetween(findMember, startInclusive, endInclusive);
+
+        List<ScheduleResponseDTO.ScheduleFindAllDTO> scheduleList = new ArrayList<>();
+        for (Schedule schedule : list) {
+            scheduleList.add(new ScheduleResponseDTO.ScheduleFindAllDTO(schedule)); // 객체 생성해 저장하기
+        }
+        return scheduleList;
+    }
+
+
     private static void checkMemberRelationSchedule(Member findMember, Schedule findSchedule) {
         if (!Objects.equals(findMember.getId(), findSchedule.getMember().getId())) {
             throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.FORBIDDEN);
