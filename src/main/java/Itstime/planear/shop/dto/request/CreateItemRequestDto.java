@@ -1,4 +1,10 @@
 package Itstime.planear.shop.dto.request;
 
-public record CreateItemRequestDto(int price, Long bodyPart, String img_url) {
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
+public record CreateItemRequestDto(
+         @Min(0) int price, // 0원 이상
+         @NotNull Long bodyPart,
+         @NotNull String img_url) {
 }

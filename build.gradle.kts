@@ -32,6 +32,9 @@ dependencies {
 
 	// swagger
 	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+
+	// s3
+	implementation("io.awspring.cloud:spring-cloud-aws-s3:3.1.1")
 }
 
 tasks.withType<Test> {

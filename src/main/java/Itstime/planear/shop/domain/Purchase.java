@@ -21,7 +21,7 @@ public class Purchase {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER) // 구매내역 조회시 item 엔티티도 함께 조회하는 편
     @JoinColumn(name = "item_id")
     private Item item;
 
