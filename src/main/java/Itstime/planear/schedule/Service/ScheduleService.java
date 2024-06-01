@@ -71,7 +71,7 @@ public class ScheduleService {
     }
     // 일정 완료
     @Transactional
-    public ScheduleResponseDTO.scheduleCompleteDTO complete(Long memberId,Long scheduleId) {
+    public ScheduleResponseDTO.ScheduleCompleteDTO complete(Long memberId,Long scheduleId) {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요",HttpStatus.NOT_FOUND));
         Schedule findSchedule = scheduleRepository.findById(scheduleId)
@@ -80,7 +80,20 @@ public class ScheduleService {
         checkMemberRelationSchedule(findMember,findSchedule);
         findSchedule.updateScheduleStatus(true);
 
-        return new ScheduleResponseDTO.scheduleCompleteDTO(findSchedule);
+        return new ScheduleResponseDTO.ScheduleCompleteDTO(findSchedule);
+    }
+    // 일정 삭제
+    @Transactional
+    public ScheduleResponseDTO.ScheduleDeleteDTO delete(Long memberId,Long scheduleId) {
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요",HttpStatus.NOT_FOUND));
+        Schedule findSchedule =scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요",HttpStatus.NOT_FOUND));
+
+        checkMemberRelationSchedule(findMember,findSchedule);
+        scheduleRepository.deleteById(scheduleId);
+        return new ScheduleResponseDTO.ScheduleDeleteDTO(scheduleId);
+
     }
     // 먼슬리 일정 조회
     public List<ScheduleResponseDTO.ScheduleFindAllDTO> findAll(Long memberId, LocalDate startInclusive, LocalDate endInclusive) {

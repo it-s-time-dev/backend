@@ -11,12 +11,12 @@ import java.time.LocalDate;
 public class ScheduleResponseDTO {
     // 일정 완료
     @Getter
-    public static class scheduleCompleteDTO {
+    public static class ScheduleCompleteDTO {
         private Long id;
         private String title;
         private boolean completion;
 
-        public scheduleCompleteDTO(Schedule schedule) {
+        public ScheduleCompleteDTO(Schedule schedule) {
             this.id = schedule.getId();
             this.title = schedule.getTitle();
             this.completion = schedule.isCompletion();
@@ -90,6 +90,13 @@ public class ScheduleResponseDTO {
             this.categoryId = schedule.getCategory().getId();
             this.title = schedule.getTitle();
             this.completion = schedule.isCompletion();
+    // 일정 삭제
+    @Getter
+    public static class ScheduleDeleteDTO {
+        private Long id;
+
+        public ScheduleDeleteDTO(Long id) {
+            this.id = id;
         }
     }
 }

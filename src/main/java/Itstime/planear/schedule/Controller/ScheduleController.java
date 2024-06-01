@@ -37,9 +37,10 @@ public class ScheduleController {
     @PostMapping("/schedule/complete")
     public ApiResponse<ScheduleResponseDTO.scheduleCompleteDTO> complete(@RequestBody ScheduleRequestDTO.ScheduleCompleteDTO scheduleCompleteDTO,
             @RequestHeader(value = "user-no",required = false) Long memberId){
-                ScheduleResponseDTO.scheduleCompleteDTO result = scheduleService.complete(memberId, scheduleCompleteDTO.getScheduleId());
+                ScheduleResponseDTO.ScheduleCompleteDTO result = scheduleService.complete(memberId, scheduleCompleteDTO.getScheduleId());
                 return ApiResponse.success(result);
     }
+
     // 먼슬리 일정 조회
     @GetMapping("/schedule")
     public ApiResponse<List<ScheduleResponseDTO.ScheduleFindAllDTO>> findAll(
@@ -57,6 +58,12 @@ public class ScheduleController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate targetDay) {
 
         List<ScheduleResponseDTO.ScheduleFindOneDTO> result = scheduleService.findOne(memberId, targetDay);
+      
+    // 일정 삭제
+    @DeleteMapping("/schedule/{scheduleId}")
+    public ApiResponse<ScheduleResponseDTO.ScheduleDeleteDTO> delete(@PathVariable("scheduleId")Long scheduleId,
+                                                                     @RequestHeader(value = "user-no",required = false) Long memberId) {
+        ScheduleResponseDTO.ScheduleDeleteDTO result = scheduleService.delete(memberId,scheduleId);
         return ApiResponse.success(result);
     }
 }

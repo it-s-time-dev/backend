@@ -20,4 +20,8 @@ public enum BodyPart {
         }
         throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND);
     }
+
+    public int getValue(){
+        return this.value;
+    }
 }
