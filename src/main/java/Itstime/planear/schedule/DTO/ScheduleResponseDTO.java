@@ -77,4 +77,19 @@ public class ScheduleResponseDTO {
             this.end = schedule.getEnd();
         }
     }
+    // 상세 일정 조회
+    @Getter
+    public static class ScheduleFindOneDTO {
+        private Long id;
+        private Long categoryId;
+        private String title;
+        private boolean completion;
+
+        public ScheduleFindOneDTO(Schedule schedule) {
+            this.id = schedule.getId();
+            this.categoryId = schedule.getCategory().getId();
+            this.title = schedule.getTitle();
+            this.completion = schedule.isCompletion();
+        }
+    }
 }

@@ -83,7 +83,6 @@ public class ScheduleService {
         return new ScheduleResponseDTO.scheduleCompleteDTO(findSchedule);
     }
     // 먼슬리 일정 조회
-    @Transactional
     public List<ScheduleResponseDTO.ScheduleFindAllDTO> findAll(Long memberId, LocalDate startInclusive, LocalDate endInclusive) {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
@@ -96,7 +95,20 @@ public class ScheduleService {
         }
         return scheduleList;
     }
+    // 상세 일정 조회
+    public List<ScheduleResponseDTO.ScheduleFindOneDTO> findOne(Long memberId, LocalDate targetDay) {
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
 
+        LocalDate nextDay = targetDay.plusDays(1); // 다음 날 00:00 전까지
+        List<Schedule> list = scheduleRepository.findAllByMemberAndDate(findMember, targetDay, nextDay);
+        List<ScheduleResponseDTO.ScheduleFindOneDTO> scheduleList = new ArrayList<>();
+
+        for (Schedule schedule : list) {
+            scheduleList.add(new ScheduleResponseDTO.ScheduleFindOneDTO(schedule));
+        }
+        return scheduleList;
+    }
 
     private static void checkMemberRelationSchedule(Member findMember, Schedule findSchedule) {
         if (!Objects.equals(findMember.getId(), findSchedule.getMember().getId())) {

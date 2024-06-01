@@ -50,4 +50,13 @@ public class ScheduleController {
         List<ScheduleResponseDTO.ScheduleFindAllDTO> result = scheduleService.findAll(memberId, startInclusive, endInclusive);
         return ApiResponse.success(result);
     }
+    // 상세 일정 조회
+    @GetMapping("/schedule/detail")
+    public ApiResponse<List<ScheduleResponseDTO.ScheduleFindOneDTO>> findOne(
+            @RequestHeader(value = "user-no", required = false) Long memberId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate targetDay) {
+
+        List<ScheduleResponseDTO.ScheduleFindOneDTO> result = scheduleService.findOne(memberId, targetDay);
+        return ApiResponse.success(result);
+    }
 }
