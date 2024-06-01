@@ -27,4 +27,8 @@ public class Item {
         this.bodyPart = bodyPart;
         this.img_url = img_url;
     }
+
+    public void updateImg_url(String url){
+        this.img_url = url;
+    }
 }

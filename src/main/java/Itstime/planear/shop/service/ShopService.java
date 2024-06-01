@@ -15,6 +15,7 @@ import Itstime.planear.shop.dto.process.WearingItemProcessDto;
 import Itstime.planear.shop.dto.request.ApplyItemRequestDto;
 import Itstime.planear.shop.dto.request.BuyItemRequestDto;
 import Itstime.planear.shop.dto.request.CreateItemRequestDto;
+import Itstime.planear.shop.dto.request.SaveImgUrlRequestDto;
 import Itstime.planear.shop.dto.response.*;
 import Itstime.planear.shop.repository.ItemRepository;
 import Itstime.planear.shop.repository.PurchaseRepository;
@@ -22,6 +23,7 @@ import Itstime.planear.shop.repository.WearingRepsitory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ShopService {
 
@@ -64,6 +67,7 @@ public class ShopService {
         return memberRepository.existsById(memberId);
     } // member 존재여부
 
+    @Transactional
     public ApiResponse<CreateItemResponseDto> createItem(CreateItemRequestDto dto){
         BodyPart bodyPart = BodyPart.fromValue(dto.bodyPart().intValue()); // BodyPart Long -> 객체로 변환
         Item newItem = new Item(dto.price(), bodyPart, dto.img_url());
@@ -71,6 +75,7 @@ public class ShopService {
         return ApiResponse.success(new CreateItemResponseDto("success"));
     }
 
+    @Transactional
     public ApiResponse<BuyItemResponseDto> buyItem(Long memberId, BuyItemRequestDto dto){
         Member member = checkByMemberId(memberId); // 멤버 확인
         // 상점에 존재하는 아이템인지 확인
@@ -110,6 +115,7 @@ public class ShopService {
         return ApiResponse.success(new WearingItemListResponseDto(responseDto));
     }
 
+    @Transactional
     public ApiResponse<ApplyItemResponseDto> applyItem(Long memberId, ApplyItemRequestDto dto){
         Member member = checkByMemberId(memberId); // 멤버 확인
         Item item = itemRepository.findById(dto.itemId()) // 아이템 확인
@@ -132,5 +138,13 @@ public class ShopService {
         return memberRepository.findById(memberId)
                 .orElseThrow(() ->
                         new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
+    }
+
+    @Transactional
+    public ApiResponse<CommonResponseDto> updateImgUrl(SaveImgUrlRequestDto dto){
+        Item item = itemRepository.findById(dto.itemId()).orElseThrow(
+                () -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
+        item.updateImg_url(dto.url());
+        return ApiResponse.success(new CommonResponseDto("success"));
     }
 }
