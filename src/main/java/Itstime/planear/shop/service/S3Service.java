@@ -3,7 +3,6 @@ package Itstime.planear.shop.service;
 import Itstime.planear.common.ApiResponse;
 import Itstime.planear.exception.PlanearException;
 import Itstime.planear.shop.dto.request.S3UploadRequestDto;
-import Itstime.planear.shop.dto.response.CreateItemResponseDto;
 import Itstime.planear.shop.dto.response.S3UploadResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,14 +46,12 @@ public class S3Service {
             s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(inputStream, multipartFile.getSize()));
 
         }catch (IOException e){
-            log.error(String.valueOf(e));
             throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.BAD_REQUEST);
         }
         GetUrlRequest getUrlRequest = GetUrlRequest.builder()
                 .bucket(bucket)
                 .key(filePath)
                 .build();
-        ApiResponse.success(new CreateItemResponseDto("success"));
         return ApiResponse.success(new S3UploadResponseDto(s3Client.utilities().getUrl(getUrlRequest).toString())) ;
     }
 
