@@ -5,7 +5,11 @@ import Itstime.planear.schedule.DTO.ScheduleRequestDTO;
 import Itstime.planear.schedule.DTO.ScheduleResponseDTO;
 import Itstime.planear.schedule.Service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,11 +35,30 @@ public class ScheduleController {
     }
     // 일정 완료
     @PostMapping("/schedule/complete")
-    public ApiResponse<ScheduleResponseDTO.ScheduleCompleteDTO> complete(@RequestBody ScheduleRequestDTO.ScheduleCompleteDTO scheduleCompleteDTO,
+    public ApiResponse<ScheduleResponseDTO.scheduleCompleteDTO> complete(@RequestBody ScheduleRequestDTO.ScheduleCompleteDTO scheduleCompleteDTO,
             @RequestHeader(value = "user-no",required = false) Long memberId){
                 ScheduleResponseDTO.ScheduleCompleteDTO result = scheduleService.complete(memberId, scheduleCompleteDTO.getScheduleId());
                 return ApiResponse.success(result);
     }
+
+    // 먼슬리 일정 조회
+    @GetMapping("/schedule")
+    public ApiResponse<List<ScheduleResponseDTO.ScheduleFindAllDTO>> findAll(
+            @RequestHeader(value = "user-no", required = false) Long memberId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startInclusive,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endInclusive) {
+
+        List<ScheduleResponseDTO.ScheduleFindAllDTO> result = scheduleService.findAll(memberId, startInclusive, endInclusive);
+        return ApiResponse.success(result);
+    }
+    // 상세 일정 조회
+    @GetMapping("/schedule/detail")
+    public ApiResponse<List<ScheduleResponseDTO.ScheduleFindOneDTO>> findOne(
+            @RequestHeader(value = "user-no", required = false) Long memberId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate targetDay) {
+
+        List<ScheduleResponseDTO.ScheduleFindOneDTO> result = scheduleService.findOne(memberId, targetDay);
+      
     // 일정 삭제
     @DeleteMapping("/schedule/{scheduleId}")
     public ApiResponse<ScheduleResponseDTO.ScheduleDeleteDTO> delete(@PathVariable("scheduleId")Long scheduleId,
