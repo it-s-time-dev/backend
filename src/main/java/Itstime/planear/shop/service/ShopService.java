@@ -1,6 +1,9 @@
 package Itstime.planear.shop.service;
 
 
+import Itstime.planear.coin.domain.Coin;
+import Itstime.planear.coin.domain.CoinAmount;
+import Itstime.planear.coin.domain.CoinRepository;
 import Itstime.planear.common.ApiResponse;
 import Itstime.planear.exception.PlanearException;
 import Itstime.planear.member.domain.Member;
@@ -39,7 +42,7 @@ public class ShopService {
     private final ItemRepository itemRepository;
     private final WearingRepsitory wearingRepsitory;
     private final PurchaseRepository purchaseRepository;
-
+    private final CoinRepository coinRepository;
 
     // 부위별 아이템 목록 조회
     public ApiResponse<ItemListResponseDto> itemListByCategory(Long categoryId, Long memberId){
@@ -85,6 +88,14 @@ public class ShopService {
         if (purchaseRepository.existsByMemberIdAndItemId(member.getId(), dto.itemId())){
             throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.BAD_REQUEST);
         }
+        // 보유코인 확인
+        Coin coin = coinRepository.findByMemberId(memberId).orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
+        if (coin.getCoinAmount().getAmount() < item.getPrice()){
+            // 보유코인이 가격 미만이면 예외
+            throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.BAD_REQUEST);
+        }
+        CoinAmount resultCoin = coin.getCoinAmount().minus(item.getPrice());
+        coin.updateCoinAmount(resultCoin);
         BodyPart bodyPart = item.getBodyPart();
         purchaseRepository.save(new Purchase(member, item, bodyPart));
         return ApiResponse.success(new BuyItemResponseDto("success"));
