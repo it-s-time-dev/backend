@@ -22,6 +22,7 @@ public class ScheduleResponseDTO {
             this.completion = schedule.isCompletion();
         }
     }
+
     // 일정 추가
     @Getter
     public static class ScheduleCreateDTO {
@@ -60,6 +61,7 @@ public class ScheduleResponseDTO {
             this.detail = schedule.getDetail();
         }
     }
+
     // 먼슬리 일정 조회
     @Getter
     public static class ScheduleFindAllDTO {
@@ -77,6 +79,7 @@ public class ScheduleResponseDTO {
             this.end = schedule.getEnd();
         }
     }
+
     // 상세 일정 조회
     @Getter
     public static class ScheduleFindOneDTO {
@@ -90,6 +93,9 @@ public class ScheduleResponseDTO {
             this.categoryId = schedule.getCategory().getId();
             this.title = schedule.getTitle();
             this.completion = schedule.isCompletion();
+        }
+    }
+
     // 일정 삭제
     @Getter
     public static class ScheduleDeleteDTO {
