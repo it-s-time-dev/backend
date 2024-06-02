@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -93,6 +95,34 @@ public class ScheduleService {
         return new ScheduleResponseDTO.ScheduleDeleteDTO(scheduleId);
 
     }
+    // 먼슬리 일정 조회
+    public List<ScheduleResponseDTO.ScheduleFindAllDTO> findAll(Long memberId, LocalDate startInclusive, LocalDate endInclusive) {
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
+
+        List<Schedule> list = scheduleRepository.findAllByMemberAndStartBetween(findMember, startInclusive, endInclusive);
+
+        List<ScheduleResponseDTO.ScheduleFindAllDTO> scheduleList = new ArrayList<>();
+        for (Schedule schedule : list) {
+            scheduleList.add(new ScheduleResponseDTO.ScheduleFindAllDTO(schedule)); // 객체 생성해 저장하기
+        }
+        return scheduleList;
+    }
+    // 상세 일정 조회
+    public List<ScheduleResponseDTO.ScheduleFindOneDTO> findOne(Long memberId, LocalDate targetDay) {
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
+
+        LocalDate nextDay = targetDay.plusDays(1); // 다음 날 00:00 전까지
+        List<Schedule> list = scheduleRepository.findAllByMemberAndDate(findMember, targetDay, nextDay);
+        List<ScheduleResponseDTO.ScheduleFindOneDTO> scheduleList = new ArrayList<>();
+
+        for (Schedule schedule : list) {
+            scheduleList.add(new ScheduleResponseDTO.ScheduleFindOneDTO(schedule));
+        }
+        return scheduleList;
+    }
+
     private static void checkMemberRelationSchedule(Member findMember, Schedule findSchedule) {
         if (!Objects.equals(findMember.getId(), findSchedule.getMember().getId())) {
             throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.FORBIDDEN);
