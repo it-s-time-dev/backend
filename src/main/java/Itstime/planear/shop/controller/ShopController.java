@@ -4,6 +4,7 @@ import Itstime.planear.common.ApiResponse;
 import Itstime.planear.shop.dto.request.ApplyItemRequestDto;
 import Itstime.planear.shop.dto.request.BuyItemRequestDto;
 import Itstime.planear.shop.dto.request.CreateItemRequestDto;
+import Itstime.planear.shop.dto.request.SaveImgUrlRequestDto;
 import Itstime.planear.shop.dto.response.*;
 import Itstime.planear.shop.service.ShopService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,8 +68,16 @@ public class ShopController {
     @Operation(summary = "아이템 착용하기", description = "아이템 착용하기")
     public ApiResponse<ApplyItemResponseDto> applyItem(
             @RequestHeader(name = "user-no") Long memberId,
-            @RequestBody ApplyItemRequestDto dto
+            @RequestBody @Valid ApplyItemRequestDto dto
     ){
         return shopService.applyItem(memberId, dto);
+    }
+
+    @PostMapping("/update-url")
+    @Operation(summary = "아이템 이미지 URL 저장", description = "URL을 받아 아이템 엔티티 img_url필드 정보 저장하기")
+    public ApiResponse<CommonResponseDto> updateImgUrl(
+            @RequestBody SaveImgUrlRequestDto dto
+            ){
+        return shopService.updateImgUrl(dto);
     }
 }

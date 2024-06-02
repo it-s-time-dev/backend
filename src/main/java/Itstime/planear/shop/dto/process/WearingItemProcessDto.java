@@ -9,12 +9,12 @@ public class WearingItemProcessDto {
 
     private Long id;
     private String url;
-    private Long categoryId;
+    private BodyPart bodyPart;
 
     @Builder
-    public WearingItemProcessDto(Long id, String url, Long categoryId) {
+    public WearingItemProcessDto(Long id, String url, BodyPart bodyPart) {
         this.id = id;
         this.url = url;
-        this.categoryId = categoryId;
+        this.bodyPart = bodyPart;
     }
 }

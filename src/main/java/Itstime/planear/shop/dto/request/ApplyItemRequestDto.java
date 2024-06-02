@@ -1,4 +1,7 @@
 package Itstime.planear.shop.dto.request;
 
-public record ApplyItemRequestDto(Long itemId) {
+import jakarta.validation.constraints.NotNull;
+
+public record ApplyItemRequestDto(
+        @NotNull Long itemId) {
 }
