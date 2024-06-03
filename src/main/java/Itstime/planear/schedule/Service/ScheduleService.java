@@ -31,8 +31,9 @@ public class ScheduleService {
         // null일때 스케줄 추가 날짜로 기본값 설정
         LocalDate start = (scheduleCreateDTO.getStart() != null) ? scheduleCreateDTO.getStart() : LocalDate.now();
         LocalDate end = (scheduleCreateDTO.getEnd() != null) ? scheduleCreateDTO.getEnd() : LocalDate.now();
+        Long categoryId = scheduleCreateDTO.getCategoryId();
 
-        Schedule schedule = new Schedule(scheduleCreateDTO.getTitle(), findMember, start, end, scheduleCreateDTO.getDetail());
+        Schedule schedule = new Schedule(scheduleCreateDTO.getTitle(), findMember, start, end, categoryId ,scheduleCreateDTO.getDetail());
 
         scheduleRepository.save(schedule);
 

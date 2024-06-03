@@ -40,12 +40,13 @@ public class Schedule extends BaseEntity {
     private CoinAmount coin;
 
 
-    public Schedule(String title, Member member,LocalDate start,LocalDate end,String detail) {
+    public Schedule(String title, Member member,LocalDate start,LocalDate end,Long categoryId ,String detail) {
         this.title = title;
         this.member = member;
         this.start = start;
         this.end = end;
         this.detail = detail;
+        this.categoryId = categoryId;
     }
     // 업데이트 관련 메서드
     public void updateTitle(String title ) {
