@@ -33,20 +33,18 @@ public class Schedule extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member; // 일대다 관계
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @Column(name = "categoryId")
+    private Long categoryId;
 
     @Embedded
     private CoinAmount coin;
 
 
-    public Schedule(String title, Member member,Category category,LocalDate start,LocalDate end,String detail) {
+    public Schedule(String title, Member member,LocalDate start,LocalDate end,String detail) {
         this.title = title;
         this.member = member;
         this.start = start;
         this.end = end;
-        this.category = category;
         this.detail = detail;
     }
     // 업데이트 관련 메서드
@@ -62,8 +60,8 @@ public class Schedule extends BaseEntity {
     public void updateDetail(String detail ) {
         this.detail = detail;
     }
-    public void updateCategory(Category category ) {
-        this.category = category;
+    public void updateCategory(Long categoryId ) {
+        this.categoryId = categoryId;
     }
     // 상태 변경 메서드
     public void updateScheduleStatus(Boolean completion) {
