@@ -5,7 +5,6 @@ import Itstime.planear.member.domain.Member;
 import Itstime.planear.member.domain.MemberRepository;
 import Itstime.planear.schedule.DTO.ScheduleRequestDTO;
 import Itstime.planear.schedule.DTO.ScheduleResponseDTO;
-import Itstime.planear.schedule.Domain.Category;
 import Itstime.planear.schedule.Domain.CategoryRepository;
 import Itstime.planear.schedule.Domain.Schedule;
 import Itstime.planear.schedule.Domain.ScheduleRepository;
@@ -31,13 +30,11 @@ public class ScheduleService {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
 
-        Category ChoiceColor = categoryRepository.findById(scheduleCreateDTO.getCategoryId())
-                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
         // null일때 스케줄 추가 날짜로 기본값 설정
         LocalDate start = (scheduleCreateDTO.getStart() != null) ? scheduleCreateDTO.getStart() : LocalDate.now();
         LocalDate end = (scheduleCreateDTO.getEnd() != null) ? scheduleCreateDTO.getEnd() : LocalDate.now();
 
-        Schedule schedule = new Schedule(scheduleCreateDTO.getTitle(), findMember, ChoiceColor, start, end, scheduleCreateDTO.getDetail());
+        Schedule schedule = new Schedule(scheduleCreateDTO.getTitle(), findMember, start, end, scheduleCreateDTO.getDetail());
 
         scheduleRepository.save(schedule);
 
@@ -59,13 +56,7 @@ public class ScheduleService {
         findSchedule.updateDetail(scheduleUpdateDTO.getDetail());
         findSchedule.updateStart(scheduleUpdateDTO.getStart());
         findSchedule.updateEnd(scheduleUpdateDTO.getEnd());
-
-        // scheduleUpdateDTO에 카테고리 있다면 해당 카테고리로 업데이트하도록
-        if (scheduleUpdateDTO.getCategoryId() != null) {
-            Category category = categoryRepository.findById(scheduleUpdateDTO.getCategoryId())
-                    .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요", HttpStatus.NOT_FOUND));
-            findSchedule.updateCategory(category);
-        }
+        findSchedule.updateCategory(scheduleUpdateDTO.getCategoryId());
 
         return new ScheduleResponseDTO.ScheduleUpdateDTO(findSchedule);
     }
