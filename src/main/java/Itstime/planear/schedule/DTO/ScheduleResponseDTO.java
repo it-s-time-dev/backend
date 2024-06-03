@@ -15,13 +15,13 @@ public class ScheduleResponseDTO {
         private Long id;
         private String title;
         private boolean completion;
-        private int coin;
+//        private int coin; //테스트
 
         public ScheduleCompleteDTO(Schedule schedule) {
             this.id = schedule.getId();
             this.title = schedule.getTitle();
             this.completion = schedule.isCompletion();
-            this.coin = schedule.getCoin().getAmount();
+//            this.coin = schedule.getCoin().getAmount(); //테스트
         }
     }
 
