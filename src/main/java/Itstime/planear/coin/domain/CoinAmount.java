@@ -30,4 +30,8 @@ public class CoinAmount {
     public CoinAmount minus(CoinAmount coinAmount) {
         return new CoinAmount(this.amount - coinAmount.amount);
     }
+
+    public CoinAmount add(int amount) {
+        return new CoinAmount(this.amount + amount);
+    }
 }
