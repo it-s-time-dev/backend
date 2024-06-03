@@ -1,6 +1,7 @@
 package Itstime.planear.schedule.Domain;
 import java.time.LocalDate;
 
+import Itstime.planear.coin.domain.CoinAmount;
 import Itstime.planear.common.BaseEntity;
 import Itstime.planear.member.domain.Member;
 import jakarta.persistence.*;
@@ -25,8 +26,6 @@ public class Schedule extends BaseEntity {
     private LocalDate end;
     @Column(name ="detail")
     private String detail;
-    @Column(name ="reward")
-    private int reward;
     @Column(name ="Completion")
     private boolean completion = false; //초기 상태 설정
 
@@ -37,6 +36,9 @@ public class Schedule extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @Embedded
+    private CoinAmount coin;
 
 
     public Schedule(String title, Member member,Category category,LocalDate start,LocalDate end,String detail) {
@@ -66,6 +68,12 @@ public class Schedule extends BaseEntity {
     // 상태 변경 메서드
     public void updateScheduleStatus(Boolean completion) {
         this.completion = completion != null ? completion : false; // 인자 값 true로 주면 상태변경하도록
+        if (completion != null && completion) {
+            if (this.coin == null) {
+                this.coin = new CoinAmount(0); // coin 객체가 null이면 초기화
+            }
+            this.coin = this.coin.add(5); // 스케줄이 완료되면 5코인 추가
+        }
     }
 
 }
