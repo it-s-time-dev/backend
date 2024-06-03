@@ -5,7 +5,6 @@ import Itstime.planear.member.domain.Member;
 import Itstime.planear.member.domain.MemberRepository;
 import Itstime.planear.schedule.DTO.ScheduleRequestDTO;
 import Itstime.planear.schedule.DTO.ScheduleResponseDTO;
-import Itstime.planear.schedule.Domain.CategoryRepository;
 import Itstime.planear.schedule.Domain.Schedule;
 import Itstime.planear.schedule.Domain.ScheduleRepository;
 import jakarta.transaction.Transactional;
@@ -22,7 +21,6 @@ import java.util.Objects;
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final MemberRepository memberRepository;
-    private final CategoryRepository categoryRepository;
 
     // 일정 추가
     @Transactional

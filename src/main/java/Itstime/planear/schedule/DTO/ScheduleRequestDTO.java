@@ -1,6 +1,5 @@
 package Itstime.planear.schedule.DTO;
 
-import Itstime.planear.schedule.Domain.Category;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
