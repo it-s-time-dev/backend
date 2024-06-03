@@ -26,8 +26,6 @@ public class Schedule extends BaseEntity {
     private LocalDate end;
     @Column(name ="detail")
     private String detail;
-    @Column(name ="reward")
-    private int reward;
     @Column(name ="Completion")
     private boolean completion = false; //초기 상태 설정
 
