@@ -1,6 +1,5 @@
 package Itstime.planear.schedule.DTO;
 
-import Itstime.planear.schedule.Domain.Category;
 import Itstime.planear.schedule.Domain.Schedule;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
@@ -15,13 +14,11 @@ public class ScheduleResponseDTO {
         private Long id;
         private String title;
         private boolean completion;
-//        private int coin; //테스트
 
         public ScheduleCompleteDTO(Schedule schedule) {
             this.id = schedule.getId();
             this.title = schedule.getTitle();
             this.completion = schedule.isCompletion();
-//            this.coin = schedule.getCoin().getAmount(); //테스트
         }
     }
 
@@ -30,12 +27,12 @@ public class ScheduleResponseDTO {
     public static class ScheduleCreateDTO {
         private Long id;
         private String title;
-        private Category category;
+        private Long categoryId;
 
         public ScheduleCreateDTO(Schedule schedule) {
             this.id = schedule.getId();
             this.title = schedule.getTitle();
-            this.category = schedule.getCategory();
+            this.categoryId = schedule.getCategoryId();
 
         }
     }
@@ -59,7 +56,7 @@ public class ScheduleResponseDTO {
             this.title = schedule.getTitle();
             this.start = schedule.getStart();
             this.end = schedule.getEnd();
-            this.categoryId = schedule.getCategory().getId();
+            this.categoryId = schedule.getCategoryId();
             this.detail = schedule.getDetail();
         }
     }
@@ -76,7 +73,7 @@ public class ScheduleResponseDTO {
 
         public ScheduleFindAllDTO(Schedule schedule) {
             this.id = schedule.getId();
-            this.categoryId = schedule.getCategory().getId();
+            this.categoryId = schedule.getCategoryId();
             this.start = schedule.getStart();
             this.end = schedule.getEnd();
         }
@@ -92,7 +89,7 @@ public class ScheduleResponseDTO {
 
         public ScheduleFindOneDTO(Schedule schedule) {
             this.id = schedule.getId();
-            this.categoryId = schedule.getCategory().getId();
+            this.categoryId = schedule.getCategoryId();
             this.title = schedule.getTitle();
             this.completion = schedule.isCompletion();
         }
