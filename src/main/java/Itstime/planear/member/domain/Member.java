@@ -30,4 +30,8 @@ public class Member extends BaseEntity {
         memberName = new MemberName(name);
         this.coin = new CoinAmount(0);
     }
+
+    public void updateCoinAmount(CoinAmount coinAmount){
+        this.coin = coinAmount;
+    }
 }
