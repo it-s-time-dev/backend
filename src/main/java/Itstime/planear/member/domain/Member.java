@@ -20,14 +20,16 @@ public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String memberCode;
 
     @Embedded
     private MemberName memberName;
     @Embedded
     private CoinAmount coin;
 
-    public Member(String name) {
+    public Member(String name,String memberCode) {
         memberName = new MemberName(name);
         this.coin = new CoinAmount(0);
+        this.memberCode = memberCode;
     }
 }
