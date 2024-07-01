@@ -17,6 +17,7 @@ jobs:
       - name: set up application.properties
         run: |
           echo "${{ secrets.APPLICATION_PROPERTIES }}" > src/main/resources/application.properties
+          echo "${{ secrets.APPLICATION_PROD_PROPERTIES }}" > src/main/resources/application-prod.properties
       - name: gradle bootjar
         run: |
           chmod +x ./gradlew
