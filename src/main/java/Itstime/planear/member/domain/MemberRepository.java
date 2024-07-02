@@ -2,7 +2,9 @@ package Itstime.planear.member.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+import java.util.Optional;
 
+public interface MemberRepository extends JpaRepository<Member, Long> {
+    Optional<Member> findByMemberCode(String memberCode);
     Member findByMemberName(MemberName memberName);
 }
