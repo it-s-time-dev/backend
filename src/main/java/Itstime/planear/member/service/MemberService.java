@@ -5,11 +5,8 @@ import Itstime.planear.exception.PlanearException;
 import Itstime.planear.member.domain.Member;
 import Itstime.planear.member.domain.MemberName;
 import Itstime.planear.member.domain.MemberRepository;
-import Itstime.planear.member.dto.CheckMemberNameRequest;
-import Itstime.planear.member.dto.CheckMemberNameResponse;
+import Itstime.planear.member.dto.*;
 
-import Itstime.planear.member.dto.CreateMemberRequest;
-import Itstime.planear.member.dto.CreateMemberResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +50,12 @@ public class MemberService {
             sb.append(chars.charAt(index));
         }
         return sb.toString();
+    }
+    public ApiResponse<FindMemberResponse> findMember(String name){
+        Member member = memberRepository.findByMemberName(new MemberName(name));
+        if(member == null){
+            throw new PlanearException("존재하지 않는 이름입니다.", HttpStatus.BAD_REQUEST);
+        }
+        return ApiResponse.success(new FindMemberResponse(member.getId(), member.getMemberName().getName()));
     }
 }

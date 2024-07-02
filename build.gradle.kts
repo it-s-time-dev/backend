@@ -1,27 +1,28 @@
 plugins {
-	java
-	id("org.springframework.boot") version "3.2.4"
-	id("io.spring.dependency-management") version "1.1.4"
+    java
+    id("org.springframework.boot") version "3.2.4"
+    id("io.spring.dependency-management") version "1.1.4"
 }
 
 group = "Itstime"
 version = "0.0.1-SNAPSHOT"
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_21
 }
 
 configurations {
-	compileOnly {
-		extendsFrom(configurations.annotationProcessor.get())
-	}
+    compileOnly {
+        extendsFrom(configurations.annotationProcessor.get())
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
+
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	compileOnly("org.projectlombok:lombok")
@@ -35,8 +36,16 @@ dependencies {
 
 	// s3
 	implementation("io.awspring.cloud:spring-cloud-aws-s3:3.1.1")
+
+	// logback
+	implementation("org.springframework.boot:spring-boot-starter-logging")
+
+	// actuator & prometheus
+	implementation ("org.springframework.boot:spring-boot-starter-actuator")
+	runtimeOnly ("io.micrometer:micrometer-registry-prometheus")
+
 }
 
 tasks.withType<Test> {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

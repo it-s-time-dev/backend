@@ -70,12 +70,16 @@ public class ScheduleResponseDTO {
         private LocalDate start;
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate end;
+        private String title;
+        private boolean completion;
 
         public ScheduleFindAllDTO(Schedule schedule) {
             this.id = schedule.getId();
             this.categoryId = schedule.getCategoryId();
             this.start = schedule.getStart();
             this.end = schedule.getEnd();
+            this.title = schedule.getTitle();
+            this.completion = schedule.isCompletion();
         }
     }
 
