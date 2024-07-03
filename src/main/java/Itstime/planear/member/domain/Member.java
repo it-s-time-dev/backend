@@ -27,7 +27,7 @@ public class Member extends BaseEntity {
     @Embedded
     private CoinAmount coin;
 
-    public Member(String name,String memberCode) {
+    public Member(String name, String memberCode) {
         memberName = new MemberName(name);
         this.coin = new CoinAmount(0);
         this.memberCode = memberCode;

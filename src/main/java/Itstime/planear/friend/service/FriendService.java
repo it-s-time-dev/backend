@@ -17,7 +17,7 @@ public class FriendService {
     private final MemberRepository memberRepository;
     private final FriendRepository friendRepository;
 
-    public ApiResponse<FriendResponseDto.AddFriendResponse> addFriend(Long memberId, String memberCode) {
+    public ApiResponse<FriendResponseDto> addFriend(Long memberId, String memberCode) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요",HttpStatus.NOT_FOUND));
 
@@ -26,6 +26,6 @@ public class FriendService {
 
         Friend friend = new Friend(member,friendMember);
         friendRepository.save(friend);
-        return ApiResponse.success(new FriendResponseDto.AddFriendResponse("SUCESS"));
+        return ApiResponse.success(new FriendResponseDto("SUCCESS"));
     }
 }

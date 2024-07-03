@@ -15,7 +15,7 @@ import java.security.SecureRandom;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
-    final static String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;

@@ -1,11 +1,4 @@
 package Itstime.planear.friend.dto;
+public record FriendResponseDto(String message) {
 
-import lombok.Getter;
-
-@Getter
-
-public class FriendResponseDto {
-    public record AddFriendResponse(String message) {
-
-    }
 }
