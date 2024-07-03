@@ -22,21 +22,28 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    compileOnly("org.projectlombok:lombok")
-    runtimeOnly("com.mysql:mysql-connector-j")
-    runtimeOnly("com.h2database:h2")
-    annotationProcessor("org.projectlombok:lombok")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 
-    // swagger
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	compileOnly("org.projectlombok:lombok")
+	runtimeOnly("com.mysql:mysql-connector-j")
+	runtimeOnly("com.h2database:h2")
+	annotationProcessor("org.projectlombok:lombok")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    // s3
-    implementation("io.awspring.cloud:spring-cloud-aws-s3:3.1.1")
+	// swagger
+	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+
+	// s3
+	implementation("io.awspring.cloud:spring-cloud-aws-s3:3.1.1")
+
+	// logback
+	implementation("org.springframework.boot:spring-boot-starter-logging")
+
+	// actuator & prometheus
+	implementation ("org.springframework.boot:spring-boot-starter-actuator")
+	runtimeOnly ("io.micrometer:micrometer-registry-prometheus")
+
 }
 
 tasks.withType<Test> {
