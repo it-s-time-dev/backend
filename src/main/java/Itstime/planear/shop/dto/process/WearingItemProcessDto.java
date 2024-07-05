@@ -8,13 +8,17 @@ import lombok.Getter;
 public class WearingItemProcessDto {
 
     private Long id;
-    private String url;
+    private String url_shop;
+    private String url_avatar1;
+    private String url_avatar2;
     private BodyPart bodyPart;
 
     @Builder
-    public WearingItemProcessDto(Long id, String url, BodyPart bodyPart) {
+    public WearingItemProcessDto(Long id, String url_shop, String url_avatar1, String url_avatar2, BodyPart bodyPart) {
         this.id = id;
-        this.url = url;
+        this.url_shop = url_shop;
+        this.url_avatar1 = url_avatar1;
+        this.url_avatar2 = url_avatar2;
         this.bodyPart = bodyPart;
     }
 }
