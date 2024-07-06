@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface MemberQuestionRepository extends JpaRepository<MemberQuestion, Long> {
 
-    Optional<MemberQuestion> findFirstByMemberIdAndOrderByIdDesc(Long memberId);
+    Optional<MemberQuestion> findFirstByMemberIdOrderByIdDesc(Long memberId);
 }

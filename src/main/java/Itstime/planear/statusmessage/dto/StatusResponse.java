@@ -3,6 +3,7 @@ package Itstime.planear.statusmessage.dto;
 import Itstime.planear.statusmessage.domain.MessageType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Collections;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,7 +15,7 @@ public record StatusResponse(
 ) {
 
     public static StatusResponse uncomplete(UncompleteStatusResponse uncompleteStatusResponse) {
-        return new StatusResponse(MessageType.UNCOMPLETE, uncompleteStatusResponse, null, null);
+        return new StatusResponse(MessageType.UNCOMPLETE, uncompleteStatusResponse, Collections.emptyList(), null);
     }
 
     public static StatusResponse todaySchedule(List<TodayScheduleResponse> todaySchedule) {
@@ -22,7 +23,7 @@ public record StatusResponse(
     }
 
     public static StatusResponse qna(QnaResponse qnaResponse) {
-        return new StatusResponse(MessageType.QNA, null, null, qnaResponse);
+        return new StatusResponse(MessageType.QNA, null, Collections.emptyList(), qnaResponse);
     }
 
     public record UncompleteStatusResponse(
