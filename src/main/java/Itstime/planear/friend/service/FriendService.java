@@ -4,6 +4,7 @@ import Itstime.planear.exception.PlanearException;
 import Itstime.planear.friend.domain.Friend;
 import Itstime.planear.friend.domain.FriendRepository;
 import Itstime.planear.friend.dto.FriendResponseDto;
+import Itstime.planear.friend.dto.ShowFriendResponseDto;
 import Itstime.planear.member.domain.Member;
 import Itstime.planear.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,12 @@ public class FriendService {
         Friend friend = new Friend(member,friendMember);
         friendRepository.save(friend);
         return ApiResponse.success(new FriendResponseDto("SUCCESS"));
+    }
+    public ApiResponse<ShowFriendResponseDto> showFriend(String memberCode) {
+        Member friendMember = memberRepository.findByMemberCode(memberCode)
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요",HttpStatus.NOT_FOUND));
+
+        ShowFriendResponseDto result = new  ShowFriendResponseDto(friendMember);
+        return ApiResponse.success(result);
     }
 }
