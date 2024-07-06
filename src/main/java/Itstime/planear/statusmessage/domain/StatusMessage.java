@@ -32,19 +32,6 @@ public class StatusMessage {
     @Enumerated(value = EnumType.STRING)
     private MessageType messageType;
 
-
-    @Column(name = "question")
-    private String question;
-
-    @Column(name = "answer")
-    private String answer;
-
-//    @Column(name = "uncomplete_count")
-//    private Integer uncompleteCount;
-//
-//    @Column(name = "achievement_rate")
-//    private Integer achievementRate;
-
     @CreationTimestamp
     @Column(name = "created_ts")
     private LocalDateTime createdAt;
@@ -55,4 +42,25 @@ public class StatusMessage {
 
     @Column(name = "member_id", insertable = false, updatable = false)
     private Long memberId;
+
+    public static StatusMessage uncomplete(Member member) {
+        return StatusMessage.builder()
+                .messageType(MessageType.UNCOMPLETE)
+                .member(member)
+                .build();
+    }
+
+    public static StatusMessage qna(Member member) {
+        return StatusMessage.builder()
+                .messageType(MessageType.QNA)
+                .member(member)
+                .build();
+    }
+
+    public static StatusMessage todaySchedule(Member member) {
+        return StatusMessage.builder()
+                .messageType(MessageType.TODAY_SCHEDULE)
+                .member(member)
+                .build();
+    }
 }

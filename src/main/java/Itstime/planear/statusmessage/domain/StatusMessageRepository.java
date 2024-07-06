@@ -6,7 +6,5 @@ import java.util.Optional;
 
 public interface StatusMessageRepository extends JpaRepository<StatusMessage, Long> {
 
-    Optional<StatusMessage> findByMemberId(Long memberId);
-
-    Optional<StatusMessage> findByMemberIdOrderByIdDesc(Long memberId);
+    Optional<StatusMessage> findFirstByMemberIdOrderByIdDesc(Long memberId);
 }
