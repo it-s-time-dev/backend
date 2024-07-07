@@ -2,12 +2,21 @@ package Itstime.planear.shop.domain;
 
 
 import Itstime.planear.member.domain.Member;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Getter
@@ -23,9 +32,15 @@ public class Wearing {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @Column(name = "member_id", insertable = false, updatable = false)
+    private Long memberId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
+
+    @Column(name = "item_id", insertable = false, updatable = false)
+    private Long itemId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "bodyPart", nullable = false)
@@ -37,7 +52,7 @@ public class Wearing {
         this.bodyPart = bodyPart;
     }
 
-    public void updateWearingItem(Item item){
+    public void updateWearingItem(Item item) {
         this.item = item;
         this.bodyPart = item.getBodyPart();
     }
