@@ -1,7 +1,13 @@
 package Itstime.planear.friend.domain;
 
 import Itstime.planear.member.domain.Member;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,11 +23,17 @@ public class Friend {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @Column(name = "member_id", insertable = false, updatable = false)
+    private Long memberId;
+
     @ManyToOne
     @JoinColumn(name = "friend_member_id")
     private Member friendMember;
 
-    public Friend(Member member,Member friendMember) {
+    @Column(name = "friend_member_id", insertable = false, updatable = false)
+    private Long friendMemberId;
+
+    public Friend(Member member, Member friendMember) {
         this.friendMember = friendMember;
         this.member = member;
     }

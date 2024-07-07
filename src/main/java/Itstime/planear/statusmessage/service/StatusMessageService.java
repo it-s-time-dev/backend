@@ -39,8 +39,8 @@ public class StatusMessageService {
         return getStatusResponse(memberId, statusMessage.get());
     }
 
-    private StatusResponse getStatusResponse(Long memberId, StatusMessage statusMessage1) {
-        return switch (statusMessage1.getMessageType()) {
+    public StatusResponse getStatusResponse(Long memberId, StatusMessage statusMessage) {
+        return switch (statusMessage.getMessageType()) {
             case UNCOMPLETE -> uncompleteResponse(memberId);
             case TODAY_SCHEDULE -> buildTodayScheduleResponse(memberId);
             case QNA -> qnaResponse(memberId);
@@ -48,7 +48,7 @@ public class StatusMessageService {
     }
 
     private StatusResponse qnaResponse(Long memberId) {
-        MemberQuestion memberQuestion = memberQuestionRepository.findFirstByMemberIdAndOrderByIdDesc(memberId)
+        MemberQuestion memberQuestion = memberQuestionRepository.findFirstByMemberIdOrderByIdDesc(memberId)
                 .orElseThrow(() -> new PlanearException("존재하지 않는 질문입니다.", HttpStatus.BAD_REQUEST));
         return StatusResponse.qna(
                 new StatusResponse.QnaResponse(
