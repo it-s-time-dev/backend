@@ -19,7 +19,13 @@ import Itstime.planear.shop.dto.request.ApplyItemRequestDto;
 import Itstime.planear.shop.dto.request.BuyItemRequestDto;
 import Itstime.planear.shop.dto.request.CreateItemRequestDto;
 import Itstime.planear.shop.dto.request.SaveImgUrlRequestDto;
-import Itstime.planear.shop.dto.response.*;
+import Itstime.planear.shop.dto.response.ApplyItemResponseDto;
+import Itstime.planear.shop.dto.response.BuyItemResponseDto;
+import Itstime.planear.shop.dto.response.CommonResponseDto;
+import Itstime.planear.shop.dto.response.CreateItemResponseDto;
+import Itstime.planear.shop.dto.response.ItemListResponseDto;
+import Itstime.planear.shop.dto.response.MyItemResponseDto;
+import Itstime.planear.shop.dto.response.WearingItemListResponseDto;
 import Itstime.planear.shop.repository.ItemRepository;
 import Itstime.planear.shop.repository.PurchaseRepository;
 import Itstime.planear.shop.repository.WearingRepsitory;
@@ -45,8 +51,8 @@ public class ShopService {
     private final CoinRepository coinRepository;
 
     // 부위별 아이템 목록 조회
-    public ApiResponse<ItemListResponseDto> itemListByCategory(Long categoryId, Long memberId){
-        if(!existByMemberId(memberId)){
+    public ApiResponse<ItemListResponseDto> itemListByCategory(Long categoryId, Long memberId) {
+        if (!existByMemberId(memberId)) {
             throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND);
         }
         BodyPart bodyPart = BodyPart.fromValue(categoryId.intValue());
@@ -68,12 +74,12 @@ public class ShopService {
         return ApiResponse.success(new ItemListResponseDto(listProcessDto));
     }
 
-    private boolean existByMemberId(Long memberId){
+    private boolean existByMemberId(Long memberId) {
         return memberRepository.existsById(memberId);
     } // member 존재여부
 
     @Transactional
-    public ApiResponse<CreateItemResponseDto> createItem(CreateItemRequestDto dto){
+    public ApiResponse<CreateItemResponseDto> createItem(CreateItemRequestDto dto) {
         BodyPart bodyPart = BodyPart.fromValue(dto.bodyPart().intValue()); // BodyPart Long -> 객체로 변환
         Item newItem = new Item(dto.price(), bodyPart, dto.img_url_shop(), dto.img_url_avatar1(), dto.img_url_avatar2());
         itemRepository.save(newItem);
@@ -81,18 +87,18 @@ public class ShopService {
     }
 
     @Transactional
-    public ApiResponse<BuyItemResponseDto> buyItem(Long memberId, BuyItemRequestDto dto){
+    public ApiResponse<BuyItemResponseDto> buyItem(Long memberId, BuyItemRequestDto dto) {
         Member member = checkByMemberId(memberId); // 멤버 확인
         // 상점에 존재하는 아이템인지 확인
         Item item = itemRepository.findById(dto.itemId())
                 .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
         // 기존에 구매한 아이템인지 구매내역에서 확인
-        if (purchaseRepository.existsByMemberIdAndItemId(member.getId(), dto.itemId())){
+        if (purchaseRepository.existsByMemberIdAndItemId(member.getId(), dto.itemId())) {
             throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.BAD_REQUEST);
         }
         // 보유코인 확인
         Coin coin = coinRepository.findByMemberId(memberId).orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
-        if (coin.getCoinAmount().getAmount() < item.getPrice()){
+        if (coin.getCoinAmount().getAmount() < item.getPrice()) {
             // 보유코인이 가격 미만이면 예외
             throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.BAD_REQUEST);
         }
@@ -103,7 +109,22 @@ public class ShopService {
         return ApiResponse.success(new BuyItemResponseDto("success"));
     }
 
-    public ApiResponse<WearingItemListResponseDto> wearingItems(Long memberId){
+    public ApiResponse<MyItemResponseDto> myItemByCategoryId(Long memberId, Long categoryId) {
+        Member member = checkByMemberId(memberId); // 멤버 확인
+        // 유효한 카테고리(부위) 인지 확인
+        BodyPart bodyPart = BodyPart.fromValue(categoryId.intValue());
+        List<Purchase> myItemList = purchaseRepository.findByMemberIdAndBodyPart(member.getId(), bodyPart);
+        List<MyItemProcessDto> myItemResponseDto = myItemList.stream().map(purchase ->
+                        MyItemProcessDto.builder()
+                                .id(purchase.getItem().getId())
+                                .url(purchase.getItem().getImg_url())
+                                .bodyPart(purchase.getBodyPart())
+                                .build())
+                .toList();
+        return ApiResponse.success(new MyItemResponseDto(myItemResponseDto));
+    }
+
+    public ApiResponse<WearingItemListResponseDto> wearingItems(Long memberId) {
         Member member = checkByMemberId(memberId); // 멤버 확인
         List<Wearing> wearingList = wearingRepsitory.findByMemberId(member.getId());
         List<WearingItemProcessDto> responseDto = wearingList.stream().map(wearing -> WearingItemProcessDto.builder()
@@ -117,17 +138,17 @@ public class ShopService {
     }
 
     @Transactional
-    public ApiResponse<ApplyItemResponseDto> applyItem(Long memberId, ApplyItemRequestDto dto){
+    public ApiResponse<ApplyItemResponseDto> applyItem(Long memberId, ApplyItemRequestDto dto) {
         Member member = checkByMemberId(memberId); // 멤버 확인
         Item item = itemRepository.findById(dto.itemId()) // 아이템 확인
                 .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
-        if (!purchaseRepository.existsByMemberIdAndItemId(member.getId(), item.getId())){ // 구매 내역 확인
+        if (!purchaseRepository.existsByMemberIdAndItemId(member.getId(), item.getId())) { // 구매 내역 확인
             throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND);
         }
         Optional<Wearing> wearingItem = wearingRepsitory.findByMemberIdAndBodyPart(member.getId(), item.getBodyPart());
-        if (wearingItem.isEmpty()){
+        if (wearingItem.isEmpty()) {
             wearingRepsitory.save(new Wearing(member, item, item.getBodyPart()));
-        }else {
+        } else {
             Wearing wearing = wearingItem.get();
             wearing.updateWearingItem(item);
             wearingRepsitory.save(wearing);
@@ -135,14 +156,14 @@ public class ShopService {
         return ApiResponse.success(new ApplyItemResponseDto("success"));
     }
 
-    private Member checkByMemberId(Long memberId){ // member 객체 검색, 응집성 고려하여 메소드 위치이동
+    private Member checkByMemberId(Long memberId) { // member 객체 검색, 응집성 고려하여 메소드 위치이동
         return memberRepository.findById(memberId)
                 .orElseThrow(() ->
                         new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
     }
 
     @Transactional
-    public ApiResponse<CommonResponseDto> updateImgUrl(SaveImgUrlRequestDto dto){
+    public ApiResponse<CommonResponseDto> updateImgUrl(SaveImgUrlRequestDto dto) {
         Item item = itemRepository.findById(dto.itemId()).orElseThrow(
                 () -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
         item.updateImg_url(dto.url());
