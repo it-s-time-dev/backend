@@ -14,6 +14,7 @@ public interface WearingRepsitory extends JpaRepository<Wearing, Long> {
     List<Wearing> findByMemberId(Long memberId);
 
     Optional<Wearing> findByMemberIdAndBodyPart(Long memberId, BodyPart bodyPart);
+    List<Wearing> findAllByMemberId(Long memberId);
 
     List<Wearing> findAllByMemberIdIn(List<Long> memberIds);
 }

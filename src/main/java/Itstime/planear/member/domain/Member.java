@@ -2,15 +2,11 @@ package Itstime.planear.member.domain;
 
 import Itstime.planear.coin.domain.CoinAmount;
 import Itstime.planear.common.BaseEntity;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import Itstime.planear.shop.domain.Wearing;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,6 +20,7 @@ public class Member extends BaseEntity {
 
     @Embedded
     private MemberName memberName;
+
     @Embedded
     private CoinAmount coin;
 
