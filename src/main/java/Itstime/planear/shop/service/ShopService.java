@@ -103,20 +103,6 @@ public class ShopService {
         return ApiResponse.success(new BuyItemResponseDto("success"));
     }
 
-//    public ApiResponse<MyItemResponseDto> myItemByCategoryId(Long memberId, Long categoryId){
-//        Member member = checkByMemberId(memberId); // 멤버 확인
-//        // 유효한 카테고리(부위) 인지 확인
-//        BodyPart bodyPart = BodyPart.fromValue(categoryId.intValue());
-//        List<Purchase> myItemList = purchaseRepository.findByMemberIdAndBodyPart(member.getId(), bodyPart);
-//        List<MyItemProcessDto> myItemResponseDto = myItemList.stream().map(purchase ->
-//                MyItemProcessDto.builder()
-//                        .id(purchase.getItem().getId())
-//                        .url(purchase.getItem().getImg_url_shop())
-//                        .bodyPart(purchase.getBodyPart())
-//                        .build()).collect(Collectors.toList());
-//        return ApiResponse.success(new MyItemResponseDto(myItemResponseDto));
-//    }
-
     public ApiResponse<WearingItemListResponseDto> wearingItems(Long memberId){
         Member member = checkByMemberId(memberId); // 멤버 확인
         List<Wearing> wearingList = wearingRepsitory.findByMemberId(member.getId());

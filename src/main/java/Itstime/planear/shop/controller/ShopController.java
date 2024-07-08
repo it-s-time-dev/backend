@@ -47,15 +47,6 @@ public class ShopController {
         return shopService.buyItem(memberId, dto);
     }
 
-//    @GetMapping("/store/me")
-//    @Operation(summary = "내 아이템 카테고리별 조회", description = "FACE(1), HAIR(2), TOP(3), BOTTOM(4), SHOES(5), ACCESSORY(6)")
-//    public ApiResponse<MyItemResponseDto> myItemByCategoryId(
-//            @RequestParam(name = "categoryId") Long categoryId,
-//            @RequestHeader(name = "user-no") Long memberId
-//    ){
-//        return shopService.myItemByCategoryId(memberId,categoryId);
-//    }
-
     @GetMapping("/me")
     @Operation(summary = "현재 입고있는 아이템 목록 조회", description = "현재 입고있는 부위별 아이템 목록 조회 api")
     public ApiResponse<WearingItemListResponseDto> wearingItems(
