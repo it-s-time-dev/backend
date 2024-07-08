@@ -12,10 +12,8 @@ public class ShowFriendResponseDto {
     String nickname;
     private List<MyItemProcessDto> wearingLists;
 
-    public ShowFriendResponseDto(Member member) {
-        this.nickname = member.getMemberName().getName();
-        this.wearingLists = member.getWearingList().stream()
-                .map(wearing -> new MyItemProcessDto(wearing.getId(), wearing.getItem().getImg_url(), wearing.getBodyPart()))
-                .collect(Collectors.toList());
+    public ShowFriendResponseDto(String nickname, List<MyItemProcessDto> wearingLists) {
+        this.nickname = nickname;
+        this.wearingLists = wearingLists;
     }
 }

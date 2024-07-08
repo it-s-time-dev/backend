@@ -21,9 +21,6 @@ public class Member extends BaseEntity {
     @Embedded
     private MemberName memberName;
 
-    @OneToMany(mappedBy = "member",fetch = FetchType.LAZY)
-    private List<Wearing> wearingList;
-
     @Embedded
     private CoinAmount coin;
 
