@@ -35,7 +35,7 @@ public class S3Service {
 
     public ApiResponse<S3UploadResponseDto> uploadFile(MultipartFile multipartFile, S3UploadRequestDto dto){
         validateFileExists(multipartFile); // 업로드 파일 유효성 검증
-        String fileName = buildFileName(dto.itemId(), multipartFile.getOriginalFilename());
+        String fileName = buildFileName(multipartFile.getOriginalFilename());
         String filePath = dto.bodyPart() + "/" + fileName;  // 부위별로 폴더 구조를 생성을 위해
 
         try (InputStream inputStream = multipartFile.getInputStream()) {
@@ -77,7 +77,7 @@ public class S3Service {
 
     public S3UploadResponseDto uploadFileTest(MultipartFile multipartFile, S3UploadRequestDto dto){
         validateFileExists(multipartFile); // 업로드 파일 유효성 검증
-        String fileName = buildFileName(dto.itemId(), multipartFile.getOriginalFilename());
+        String fileName = buildFileName(multipartFile.getOriginalFilename());
         String filePath = dto.bodyPart() + "/" + fileName;  // 부위별로 폴더 구조를 생성을 위해
 
         try (InputStream inputStream = multipartFile.getInputStream()) {

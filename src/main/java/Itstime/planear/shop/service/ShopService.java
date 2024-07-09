@@ -64,7 +64,9 @@ public class ShopService {
         List<ItemListProcessDto> listProcessDto = itemList.stream()
                 .map(item -> ItemListProcessDto.builder()
                         .id(item.getId())
-                        .url(item.getImg_url())
+                        .url_shop(item.getImg_url_shop())
+                        .url_avatar1(item.getImg_url_avatar1())
+                        .url_avatar2(item.getImg_url_avatar2())
                         .price(item.getPrice())
                         .has(itemIdSet.contains(item.getId())) // 시간복잡도 O(1)
                         .build()).toList();
@@ -79,7 +81,7 @@ public class ShopService {
     @Transactional
     public ApiResponse<CreateItemResponseDto> createItem(CreateItemRequestDto dto) {
         BodyPart bodyPart = BodyPart.fromValue(dto.bodyPart().intValue()); // BodyPart Long -> 객체로 변환
-        Item newItem = new Item(dto.price(), bodyPart, dto.img_url());
+        Item newItem = new Item(dto.price(), bodyPart, dto.img_url_shop(), dto.img_url_avatar1(), dto.img_url_avatar2());
         itemRepository.save(newItem);
         return ApiResponse.success(new CreateItemResponseDto("success"));
     }
@@ -127,7 +129,9 @@ public class ShopService {
         List<Wearing> wearingList = wearingRepsitory.findByMemberId(member.getId());
         List<WearingItemProcessDto> responseDto = wearingList.stream().map(wearing -> WearingItemProcessDto.builder()
                 .id(wearing.getItem().getId())
-                .url(wearing.getItem().getImg_url())
+                .url_shop(wearing.getItem().getImg_url_shop())
+                .url_avatar1(wearing.getItem().getImg_url_avatar1())
+                .url_avatar2(wearing.getItem().getImg_url_avatar2())
                 .bodyPart(wearing.getBodyPart())
                 .build()).toList();
         return ApiResponse.success(new WearingItemListResponseDto(responseDto));

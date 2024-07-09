@@ -26,7 +26,7 @@ public class S3Controller {
     private final ObjectMapper objectMapper;
 
     @PostMapping("/upload")
-    @Operation(summary = "S3 이미지 업로드 (다중 이미지 업로드 가능)", description = "bodyPart : 부위명 ex) 'TOP', 'HAIR'.., itemId : 아이템 고유ID")
+    @Operation(summary = "S3 이미지 업로드", description = "bodyPart : 부위명 ex) 'TOP', 'HAIR'.., itemId : 아이템 고유ID")
     public ApiResponse<S3UploadResponseDto> uploadFile(
             @RequestPart(value = "file") MultipartFile multipartFile,
             @RequestPart(value = "dto") S3UploadRequestDto dto
