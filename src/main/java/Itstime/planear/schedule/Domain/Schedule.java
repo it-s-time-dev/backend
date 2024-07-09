@@ -3,10 +3,12 @@ import java.time.LocalDate;
 
 import Itstime.planear.coin.domain.CoinAmount;
 import Itstime.planear.common.BaseEntity;
+import Itstime.planear.exception.PlanearException;
 import Itstime.planear.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Entity
 @Getter
@@ -47,6 +49,7 @@ public class Schedule extends BaseEntity {
         this.end = end;
         this.detail = detail;
         this.categoryId = categoryId;
+        validateDates();
     }
     // 업데이트 관련 메서드
     public void updateTitle(String title ) {
@@ -67,5 +70,11 @@ public class Schedule extends BaseEntity {
     // 상태 변경 메서드
     public void updateScheduleStatus(Boolean completion) {
         this.completion = completion != null ? completion : false; // 인자 값 true로 주면 상태변경하도록
+    }
+
+    public void validateDates() {
+        if (start != null && end != null && start.isAfter(end)) {
+            throw new PlanearException("날짜를 다시 선택해 주세요", HttpStatus.BAD_REQUEST);
+        }
     }
 }
