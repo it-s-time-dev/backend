@@ -12,7 +12,9 @@ public record FeedResponse(
 
     public record FeedWearingResponse(
             Long id,
-            String url,
+            String url_shop,
+            String url_avatar1,
+            String url_avatar2,
             BodyPart bodyPart
     ) {
     }
