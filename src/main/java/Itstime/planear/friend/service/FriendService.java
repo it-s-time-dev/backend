@@ -42,7 +42,12 @@ public class FriendService {
         List<Wearing> wearingList = wearingRepsitory.findAllByMemberId(friendMember.getId());
 
         List<MyItemProcessDto> itemDto = wearingList.stream()
-                .map(wearing -> new MyItemProcessDto(wearing.getId(), wearing.getItem().getImg_url(), wearing.getBodyPart()))
+                .map(wearing -> new MyItemProcessDto(
+                        wearing.getId(),
+                        wearing.getItem().getImg_url_shop(),
+                        wearing.getItem().getImg_url_avatar1(),
+                        wearing.getItem().getImg_url_avatar2(),
+                        wearing.getBodyPart()))
                 .collect(Collectors.toList());
 
         ShowFriendResponseDto result = new ShowFriendResponseDto(friendMember.getMemberName().getName(), itemDto);

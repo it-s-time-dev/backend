@@ -1,5 +1,6 @@
 package Itstime.planear.feed.service;
 
+import Itstime.planear.feed.dto.FeedItemUrlProcessDto;
 import Itstime.planear.feed.dto.FeedResponse;
 import Itstime.planear.feed.dto.FeedStatusMessageResponse;
 import Itstime.planear.feed.dto.FeedsResponse;
@@ -41,9 +42,15 @@ public class FeedService {
         Map<Long, String> idToNickname = getIdToNickname(allFriendIds);
         List<StatusMessage> statusMessages = statusMessageRepository.findAllByMemberIdInAndCreatedAtBetweenOrderByIdDesc(allFriendIds, LocalDateTime.now().minusDays(1), LocalDateTime.now());
         List<Wearing> wearings = wearingRepsitory.findAllByMemberIdIn(allFriendIds);
-        Map<Long, String> itemIdToUrl = itemRepository.findAllById(wearings.stream().map(Wearing::getItemId).toList())
+        Map<Long, FeedItemUrlProcessDto> itemIdToUrl = itemRepository.findAllById(wearings.stream().map(Wearing::getItemId).toList())
                 .stream()
-                .collect(Collectors.toMap(Item::getId, Item::getImg_url));
+                .collect(Collectors.toMap(
+                        Item::getId,
+                        item -> new FeedItemUrlProcessDto(
+                                item.getImg_url_shop(),
+                                item.getImg_url_avatar1(),
+                                item.getImg_url_avatar2())
+                ));
         Map<Long, List<Wearing>> memberIdToWearings = wearings.stream()
                 .collect(groupingBy(Wearing::getMemberId, toList()));
         return new FeedsResponse(
@@ -73,7 +80,15 @@ public class FeedService {
                 .toList();
     }
 
-    private FeedResponse.FeedWearingResponse toFeedWearingResponse(Wearing it, Map<Long, String> itemIdToUrl) {
-        return new FeedResponse.FeedWearingResponse(it.getItemId(), itemIdToUrl.get(it.getItemId()), it.getBodyPart());
+    private FeedResponse.FeedWearingResponse toFeedWearingResponse(Wearing it, Map<Long, FeedItemUrlProcessDto> itemIdToUrl) {
+        FeedItemUrlProcessDto dto = itemIdToUrl.get(it.getItemId());
+        return new FeedResponse.FeedWearingResponse(
+                it.getItemId(),
+                dto.url_shop(),
+                dto.url_avatar1(),
+                dto.url_avatar2(),
+                it.getBodyPart()
+        );
     }
+
 }
