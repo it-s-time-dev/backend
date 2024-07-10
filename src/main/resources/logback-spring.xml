@@ -2,7 +2,7 @@
     <springProfile name="prod">
     <!-- INFO부터 ERROR까지 기록하는 파일 설정 -->
         <appender name="ORDINARY" class="ch.qos.logback.core.FileAppender">
-            <file>planearLog.log</file>
+            <file>/home/ubuntu/actions-runner/log/planearLog.log</file>
             <encoder>
                 <pattern>%date %level [%thread] %logger{10} [%file:%line] - %msg%n</pattern>
             </encoder>
@@ -10,7 +10,7 @@
 
         <!-- WARN부터 ERROR까지 기록하는 파일 설정 -->
         <appender name="HOTFIX" class="ch.qos.logback.core.FileAppender">
-            <file>hotfixLog.log</file>
+            <file>/home/ubuntu/actions-runner/log/hotfixLog.log</file>
             <encoder>
                 <pattern>%date %level [%thread] %logger{10} [%file:%line] - %msg%n</pattern>
             </encoder>
