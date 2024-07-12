@@ -1,6 +1,7 @@
 package Itstime.planear.feed.controller;
 
 import Itstime.planear.common.ApiResponse;
+import Itstime.planear.feed.dto.AchievementRateResponseDto;
 import Itstime.planear.feed.dto.FeedsResponse;
 import Itstime.planear.feed.service.FeedService;
 import lombok.RequiredArgsConstructor;
@@ -18,5 +19,12 @@ public class FeedController {
             @RequestHeader(name = "user-no") Long memberId
     ) {
         return ApiResponse.success(feedService.getFeed(memberId));
+    }
+
+    @GetMapping("/achievementRate")
+    public ApiResponse<AchievementRateResponseDto> achievementRate(
+            @RequestHeader(name = "user-no", required = false) Long memberId
+    ){
+        return ApiResponse.success(feedService.achievementRate(memberId));
     }
 }

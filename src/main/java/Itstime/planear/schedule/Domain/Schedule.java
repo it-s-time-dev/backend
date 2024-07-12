@@ -42,7 +42,7 @@ public class Schedule extends BaseEntity {
     private CoinAmount coin;
 
 
-    public Schedule(String title, Member member,LocalDate start,LocalDate end,Long categoryId ,String detail) {
+    public Schedule(String title, Member member, LocalDate start, LocalDate end, Long categoryId , String detail) {
         this.title = title;
         this.member = member;
         this.start = start;
