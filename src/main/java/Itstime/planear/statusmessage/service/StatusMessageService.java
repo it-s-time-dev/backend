@@ -1,5 +1,7 @@
 package Itstime.planear.statusmessage.service;
 
+import Itstime.planear.coin.domain.Coin;
+import Itstime.planear.coin.domain.CoinRepository;
 import Itstime.planear.exception.PlanearException;
 import Itstime.planear.member.domain.Member;
 import Itstime.planear.member.domain.MemberRepository;
@@ -13,6 +15,7 @@ import Itstime.planear.statusmessage.domain.StatusMessage;
 import Itstime.planear.statusmessage.domain.StatusMessageRepository;
 import Itstime.planear.statusmessage.dto.StatusCreateRequest;
 import Itstime.planear.statusmessage.dto.StatusResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,7 @@ public class StatusMessageService {
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
     private final MemberQuestionRepository memberQuestionRepository;
+    private final CoinRepository coinRepository;
 
     public StatusResponse getCurrentStatus(Long memberId) {
         Optional<StatusMessage> statusMessage = statusMessageRepository.findFirstByMemberIdOrderByIdDesc(memberId);
@@ -74,8 +78,12 @@ public class StatusMessageService {
         return StatusResponse.todaySchedule(todaySchedule);
     }
 
+    @Transactional
     public void createStatusMessage(StatusCreateRequest request, Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new PlanearException("존재하지 않는 회원입니다.", HttpStatus.BAD_REQUEST));
+        Coin coin = coinRepository.findByMemberId(memberId).orElseThrow(() -> new PlanearException("존재하지 않는 코인입니다.", HttpStatus.BAD_REQUEST));
+
+        coin.updateCoinAmount(coin.getCoinAmount().add(5));
         var a = switch (request.type()) {// exhaust 를 위해서 변수에 할당
             case UNCOMPLETE -> statusMessageRepository.save(StatusMessage.uncomplete(member));
             case QNA -> {
