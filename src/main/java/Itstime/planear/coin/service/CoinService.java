@@ -30,7 +30,7 @@ public class CoinService {
     }
 
     @Transactional
-    public ApiResponse<CoinAmountResponse> updateCoinAmount(Long memberId, UpdateCoinAmountRequest request){
+    public ApiResponse<CoinAmountResponse> updateCoinAmount(Long memberId, UpdateCoinAmountRequest request) {
         if (memberId == null) {
             throw new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.BAD_REQUEST);
         }
@@ -38,7 +38,6 @@ public class CoinService {
         Coin coin = coinRepository.findByMemberId(memberId).orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
         CoinAmount coinAmount = new CoinAmount(request.coinAmount());
         coin.updateCoinAmount(coinAmount);
-        member.updateCoinAmount(coinAmount);
         return ApiResponse.success(new CoinAmountResponse(coinAmount.getAmount()));
     }
 }

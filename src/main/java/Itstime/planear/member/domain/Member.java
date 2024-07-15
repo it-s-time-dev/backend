@@ -1,6 +1,5 @@
 package Itstime.planear.member.domain;
 
-import Itstime.planear.coin.domain.CoinAmount;
 import Itstime.planear.common.BaseEntity;
 import Itstime.planear.shop.domain.Wearing;
 import jakarta.persistence.*;
@@ -21,16 +20,8 @@ public class Member extends BaseEntity {
     @Embedded
     private MemberName memberName;
 
-    @Embedded
-    private CoinAmount coin;
-
     public Member(String name, String memberCode) {
         memberName = new MemberName(name);
-        this.coin = new CoinAmount(0);
         this.memberCode = memberCode;
-    }
-
-    public void updateCoinAmount(CoinAmount coinAmount){
-        this.coin = coinAmount;
     }
 }
