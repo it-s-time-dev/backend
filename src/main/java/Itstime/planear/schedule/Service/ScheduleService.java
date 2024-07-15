@@ -70,9 +70,13 @@ public class ScheduleService {
                 .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요",HttpStatus.NOT_FOUND));
         Schedule findSchedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면,연락주세요",HttpStatus.NOT_FOUND));
+        Coin coin = coinRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
         checkMemberRelationSchedule(findMember,findSchedule);
         if (!findSchedule.isCompletion()) { // 일정이미 완료됐는지 확인
             findSchedule.updateScheduleStatus(true); //완료상태로 변경
+            CoinAmount resultCoin = coin.getCoinAmount().add(5);
+            coin.updateCoinAmount(resultCoin);
             memberRepository.save(findMember);
         }
         return new ScheduleResponseDTO.ScheduleCompleteDTO(findSchedule);
