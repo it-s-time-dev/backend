@@ -47,7 +47,7 @@ public class FriendService {
 
         Friend newFriend = new Friend(member,friendMember);
 
-        CoinAmount resultCoin = coin.getCoinAmount().add(5);
+        CoinAmount resultCoin = coin.getCoinAmount().add(10);
         coin.updateCoinAmount(resultCoin);
 
         friendRepository.save(newFriend);
