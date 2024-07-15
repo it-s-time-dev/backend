@@ -5,9 +5,10 @@ import Itstime.planear.friend.dto.FriendResponseDto;
 import Itstime.planear.friend.dto.ShowFriendResponseDto;
 import Itstime.planear.friend.service.FriendService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
+@Tag(name = "친구 관리 컨트롤러", description = "친구 관리 관련 API입니다.")
 @RestController
 @RequiredArgsConstructor
 public class FriendController {
