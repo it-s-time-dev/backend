@@ -2,6 +2,7 @@ package Itstime.planear.friend.service;
 import Itstime.planear.coin.domain.Coin;
 import Itstime.planear.coin.domain.CoinAmount;
 import Itstime.planear.coin.domain.CoinRepository;
+import Itstime.planear.coin.dto.CoinAmountResponse;
 import Itstime.planear.common.ApiResponse;
 import Itstime.planear.exception.PlanearException;
 import Itstime.planear.friend.domain.Friend;
@@ -50,7 +51,9 @@ public class FriendService {
         coin.updateCoinAmount(resultCoin);
 
         friendRepository.save(newFriend);
-        return ApiResponse.success(new FriendResponseDto("SUCCESS"));
+        CoinAmountResponse coinAmountResponse = new CoinAmountResponse(resultCoin.getAmount());
+
+        return ApiResponse.success(new FriendResponseDto("SUCCESS",coinAmountResponse));
     }
     public ApiResponse<ShowFriendResponseDto> showFriend(String memberCode) {
         Member friendMember = memberRepository.findByMemberCode(memberCode)
