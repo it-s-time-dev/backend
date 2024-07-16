@@ -40,8 +40,8 @@ public class FriendService {
                 .orElseThrow(() -> new PlanearException("잠시 문제가 생겼어요 문제가 반복되면, 연락주세요", HttpStatus.NOT_FOUND));
 
         // 친구 여부 확인
-        boolean FriendExists = friendRepository.existsByMemberIdAndFriendMemberId(memberId, friendMember.getId());
-        if (FriendExists) {
+        boolean friendExists = friendRepository.existsByMemberIdAndFriendMemberId(memberId, friendMember.getId());
+        if (friendExists) {
             throw new PlanearException("이미 추가된 친구입니다.", HttpStatus.CONFLICT);
         }
 
