@@ -16,8 +16,9 @@ public class FriendController {
 
     @Operation(summary = "친구 추가", description = "친구 코드로 친구추가 API")
     @PostMapping("/friends/add")
-    public ApiResponse<FriendResponseDto> addFriend(@RequestHeader(value = "user-no", required = false)Long memberId, @RequestBody FriendRequestDto dto) {
-        return friendService.addFriend(memberId, dto.memberCode());
+    public ApiResponse<FriendResponseDto> addFriend(@RequestHeader(value = "user-no", required = false)Long memberId, @RequestBody FriendRequestDto request) {
+        String memberCode = request.memberCode();
+        return friendService.addFriend(memberId, memberCode);
     }
     @Operation(summary = "친구 코드로 프로필 확인", description = "친구 코드로 친구추가시 친구 프로필 보이는 API")
     @GetMapping("member-info")
