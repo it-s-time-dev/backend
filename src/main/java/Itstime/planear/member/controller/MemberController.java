@@ -40,4 +40,11 @@ public class MemberController {
     ){
         return memberService.findMember(name);
     }
+    @Operation(summary = "닉네임으로 memberCode 조회", description = "닉네임으로 memberCode 조회 API")
+    @GetMapping("/user/find/memberCode")
+    public ApiResponse<FindMemberCodeResponse> findMemberCode(@RequestParam(name = "name") String name) {
+        return memberService.findMemberCode(name);
+
+    }
+
 }
