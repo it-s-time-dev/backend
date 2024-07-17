@@ -58,4 +58,12 @@ public class MemberService {
         }
         return ApiResponse.success(new FindMemberResponse(member.getId(), member.getMemberName().getName()));
     }
+    
+    public ApiResponse<FindMemberCodeResponse> findMemberCode(String name) {
+        Member member = memberRepository.findByMemberName(new MemberName(name));
+        if(member == null) {
+            throw new PlanearException("존재하지 않는 이름입니다.",HttpStatus.BAD_REQUEST);
+        }
+        return ApiResponse.success(new FindMemberCodeResponse(member.getMemberCode()));
+    }
 }
