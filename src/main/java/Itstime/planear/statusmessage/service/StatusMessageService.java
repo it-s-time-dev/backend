@@ -11,12 +11,14 @@ import Itstime.planear.schedule.DTO.ScheduleResponseDTO;
 import Itstime.planear.schedule.Service.ScheduleService;
 import Itstime.planear.statusmessage.domain.MemberQuestion;
 import Itstime.planear.statusmessage.domain.MemberQuestionRepository;
+import Itstime.planear.statusmessage.domain.MessageType;
 import Itstime.planear.statusmessage.domain.StatusMessage;
 import Itstime.planear.statusmessage.domain.StatusMessageRepository;
 import Itstime.planear.statusmessage.dto.StatusCreateRequest;
 import Itstime.planear.statusmessage.dto.StatusResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.actuate.metrics.data.DefaultRepositoryTagsProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -38,44 +40,54 @@ public class StatusMessageService {
     public StatusResponse getCurrentStatus(Long memberId) {
         Optional<StatusMessage> statusMessage = statusMessageRepository.findFirstByMemberIdOrderByIdDesc(memberId);
         if (statusMessage.isEmpty()) {
-            return buildTodayScheduleResponse(memberId);
+            return getStatusResponse(memberId, MessageType.TODAY_SCHEDULE);
         }
-        return getStatusResponse(memberId, statusMessage.get());
+        MessageType messageType = statusMessage.get().getMessageType();
+        return getStatusResponse(memberId, messageType);
     }
 
-    public StatusResponse getStatusResponse(Long memberId, StatusMessage statusMessage) {
-        return switch (statusMessage.getMessageType()) {
-            case UNCOMPLETE -> uncompleteResponse(memberId);
-            case TODAY_SCHEDULE -> buildTodayScheduleResponse(memberId);
-            case QNA -> qnaResponse(memberId);
+    public StatusResponse getStatusResponse(Long memberId, MessageType messageType) {
+        return switch (messageType) {
+            case UNCOMPLETE, TODAY_SCHEDULE -> new StatusResponse(messageType,
+                    uncompleteResponse(memberId),
+                    buildTodayScheduleResponse(memberId),
+                    null
+            );
+            case QNA -> new StatusResponse(
+                    messageType,
+                    uncompleteResponse(memberId),
+                    buildTodayScheduleResponse(memberId),
+                    qnaResponse(memberId)
+            );
         };
     }
 
-    private StatusResponse qnaResponse(Long memberId) {
+    private StatusResponse.QnaResponse qnaResponse(Long memberId) {
         MemberQuestion memberQuestion = memberQuestionRepository.findFirstByMemberIdOrderByIdDesc(memberId)
                 .orElseThrow(() -> new PlanearException("존재하지 않는 질문입니다.", HttpStatus.BAD_REQUEST));
-        return StatusResponse.qna(
-                new StatusResponse.QnaResponse(
-                        memberQuestion.getQuestionContent(),
-                        memberQuestion.getAnswer()
-                ));
+        return new StatusResponse.QnaResponse(
+                memberQuestion.getQuestionContent(),
+                memberQuestion.getAnswer()
+        );
     }
 
-    private StatusResponse uncompleteResponse(Long memberId) {
+    private StatusResponse.UncompleteStatusResponse uncompleteResponse(Long memberId) {
         List<ScheduleResponseDTO.ScheduleFindOneDTO> one = scheduleService.findOne(memberId, LocalDate.now());
         int uncompleteCount = (int) one.stream().filter(it -> !it.isCompletion()).count();
         int completeCount = one.size() - uncompleteCount;
-        return StatusResponse.uncomplete(new StatusResponse.UncompleteStatusResponse(
+        if (one.isEmpty()) {
+            return new StatusResponse.UncompleteStatusResponse(0, 0);
+        }
+        return new StatusResponse.UncompleteStatusResponse(
                 uncompleteCount,
                 (int) ((double) completeCount / one.size() * 100)
-        ));
+        );
     }
 
-    private StatusResponse buildTodayScheduleResponse(Long memberId) {
-        var todaySchedule = scheduleService.findOne(memberId, LocalDate.now()).stream()
+    private List<StatusResponse.TodayScheduleResponse> buildTodayScheduleResponse(Long memberId) {
+        return scheduleService.findOne(memberId, LocalDate.now()).stream()
                 .map(it -> new StatusResponse.TodayScheduleResponse(it.getTitle(), it.isCompletion()))
                 .toList();
-        return StatusResponse.todaySchedule(todaySchedule);
     }
 
     @Transactional
