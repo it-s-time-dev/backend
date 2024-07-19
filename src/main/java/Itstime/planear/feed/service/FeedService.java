@@ -13,6 +13,7 @@ import Itstime.planear.shop.domain.Item;
 import Itstime.planear.shop.domain.Wearing;
 import Itstime.planear.shop.repository.ItemRepository;
 import Itstime.planear.shop.repository.WearingRepsitory;
+import Itstime.planear.statusmessage.domain.MessageType;
 import Itstime.planear.statusmessage.domain.StatusMessage;
 import Itstime.planear.statusmessage.domain.StatusMessageRepository;
 import Itstime.planear.statusmessage.service.StatusMessageService;
@@ -59,14 +60,17 @@ public class FeedService {
                 .collect(groupingBy(Wearing::getMemberId, toList()));
         return new FeedsResponse(
                 statusMessages.stream()
-                        .map(statusMessage -> new FeedResponse(
-                                idToNickname.get(statusMessage.getMemberId()),
-                                memberIdToWearings.getOrDefault(statusMessage.getMemberId(), Collections.emptyList())
-                                        .stream()
-                                        .map(it -> toFeedWearingResponse(it, itemIdToUrl))
-                                        .toList(),
-                                FeedStatusMessageResponse.from(statusMessageService.getStatusResponse(memberId, statusMessage))
-                        ))
+                        .map(statusMessage -> {
+                            MessageType messageType = statusMessage.getMessageType();
+                            return new FeedResponse(
+                                    idToNickname.get(statusMessage.getMemberId()),
+                                    memberIdToWearings.getOrDefault(statusMessage.getMemberId(), Collections.emptyList())
+                                            .stream()
+                                            .map(it -> toFeedWearingResponse(it, itemIdToUrl))
+                                            .toList(),
+                                    FeedStatusMessageResponse.from(statusMessageService.getStatusResponse(memberId, messageType))
+                            );
+                        })
                         .toList()
         );
     }
