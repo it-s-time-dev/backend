@@ -1,12 +1,15 @@
 package Itstime.planear.feed.service;
 
 import Itstime.planear.exception.PlanearException;
-import Itstime.planear.feed.dto.*;
+import Itstime.planear.feed.dto.AchievementRateResponseDto;
+import Itstime.planear.feed.dto.FeedItemUrlProcessDto;
+import Itstime.planear.feed.dto.FeedResponse;
+import Itstime.planear.feed.dto.FeedStatusMessageResponse;
+import Itstime.planear.feed.dto.FeedsResponse;
 import Itstime.planear.friend.domain.Friend;
 import Itstime.planear.friend.domain.FriendRepository;
 import Itstime.planear.member.domain.Member;
 import Itstime.planear.member.domain.MemberRepository;
-import Itstime.planear.schedule.DTO.ScheduleResponseDTO;
 import Itstime.planear.schedule.Domain.Schedule;
 import Itstime.planear.schedule.Domain.ScheduleRepository;
 import Itstime.planear.shop.domain.Item;
@@ -68,7 +71,8 @@ public class FeedService {
                                             .stream()
                                             .map(it -> toFeedWearingResponse(it, itemIdToUrl))
                                             .toList(),
-                                    FeedStatusMessageResponse.from(statusMessageService.getStatusResponse(memberId, messageType))
+                                    FeedStatusMessageResponse.from(statusMessageService.getStatusResponse(memberId, messageType)),
+                                    statusMessage.getCreatedAt()
                             );
                         })
                         .toList()
@@ -163,13 +167,13 @@ public class FeedService {
         );
     }
 
-    private Map<Long, List<Wearing>> getAllFriendsWearingItems(List<Long> allFriendIds){
+    private Map<Long, List<Wearing>> getAllFriendsWearingItems(List<Long> allFriendIds) {
         List<Wearing> wearings = wearingRepsitory.findByMemberIds(allFriendIds);
         return wearings.stream()
                 .collect(Collectors.groupingBy(wearing -> wearing.getMember().getId()));
     }
 
-    private Map<Long, List<Schedule>> getAllFriendsTodaySchedules(List<Long> allFriendIds, LocalDate today){
+    private Map<Long, List<Schedule>> getAllFriendsTodaySchedules(List<Long> allFriendIds, LocalDate today) {
         List<Schedule> schedules = scheduleRepository.findAllByMemberIdsAndStartBetween(allFriendIds, today, today);
         return schedules.stream()
                 .collect(Collectors.groupingBy(schedule -> schedule.getMember().getId()));
