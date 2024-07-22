@@ -2,12 +2,14 @@ package Itstime.planear.feed.dto;
 
 import Itstime.planear.shop.domain.BodyPart;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record FeedResponse(
         String nickname,
         List<FeedWearingResponse> items,
-        FeedStatusMessageResponse statusMessage
+        FeedStatusMessageResponse statusMessage,
+        LocalDateTime updatedAt
 ) {
 
     public record FeedWearingResponse(
