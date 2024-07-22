@@ -16,9 +16,9 @@ public class ScheduleResponseDTO {
         private boolean completion;
 
         public ScheduleCompleteDTO(Schedule schedule) {
-            this.id = schedule.getId();
-            this.title = schedule.getTitle();
-            this.completion = schedule.isCompletion();
+            id = schedule.getId();
+            title = schedule.getTitle();
+            completion = schedule.isCompletion();
         }
     }
 
@@ -30,9 +30,9 @@ public class ScheduleResponseDTO {
         private Long categoryId;
 
         public ScheduleCreateDTO(Schedule schedule) {
-            this.id = schedule.getId();
-            this.title = schedule.getTitle();
-            this.categoryId = schedule.getCategoryId();
+            id = schedule.getId();
+            title = schedule.getTitle();
+            categoryId = schedule.getCategoryId();
 
         }
     }
@@ -52,12 +52,12 @@ public class ScheduleResponseDTO {
         private String detail;
 
         public ScheduleUpdateDTO(Schedule schedule) {
-            this.id = schedule.getId();
-            this.title = schedule.getTitle();
-            this.start = schedule.getStart();
-            this.end = schedule.getEnd();
-            this.categoryId = schedule.getCategoryId();
-            this.detail = schedule.getDetail();
+            id = schedule.getId();
+            title = schedule.getTitle();
+            start = schedule.getStart();
+            end = schedule.getEnd();
+            categoryId = schedule.getCategoryId();
+            detail = schedule.getDetail();
         }
     }
 
@@ -71,15 +71,17 @@ public class ScheduleResponseDTO {
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate end;
         private String title;
+        private String detail;
         private boolean completion;
 
         public ScheduleFindAllDTO(Schedule schedule) {
-            this.id = schedule.getId();
-            this.categoryId = schedule.getCategoryId();
-            this.start = schedule.getStart();
-            this.end = schedule.getEnd();
-            this.title = schedule.getTitle();
-            this.completion = schedule.isCompletion();
+            id = schedule.getId();
+            categoryId = schedule.getCategoryId();
+            start = schedule.getStart();
+            end = schedule.getEnd();
+            title = schedule.getTitle();
+            detail = schedule.getDetail();
+            completion = schedule.isCompletion();
         }
     }
 
@@ -92,10 +94,10 @@ public class ScheduleResponseDTO {
         private boolean completion;
 
         public ScheduleFindOneDTO(Schedule schedule) {
-            this.id = schedule.getId();
-            this.categoryId = schedule.getCategoryId();
-            this.title = schedule.getTitle();
-            this.completion = schedule.isCompletion();
+            id = schedule.getId();
+            categoryId = schedule.getCategoryId();
+            title = schedule.getTitle();
+            completion = schedule.isCompletion();
         }
     }
 
