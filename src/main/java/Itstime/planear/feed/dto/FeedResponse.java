@@ -9,7 +9,8 @@ public record FeedResponse(
         String nickname,
         List<FeedWearingResponse> items,
         FeedStatusMessageResponse statusMessage,
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+        String updateTimeMessage
 ) {
 
     public record FeedWearingResponse(
