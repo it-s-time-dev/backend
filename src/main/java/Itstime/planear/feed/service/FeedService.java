@@ -72,11 +72,29 @@ public class FeedService {
                                             .map(it -> toFeedWearingResponse(it, itemIdToUrl))
                                             .toList(),
                                     FeedStatusMessageResponse.from(statusMessageService.getStatusResponse(memberId, messageType)),
-                                    statusMessage.getCreatedAt()
+                                    statusMessage.getCreatedAt(),
+                                    formatUpdateTimeMessage(statusMessage.getCreatedAt())
                             );
                         })
                         .toList()
         );
+    }
+
+    private String formatUpdateTimeMessage(LocalDateTime createdAt) {
+        //59분 이내 -> 1 min ago
+        //1시간 -> 1 hour ago
+        //2시간 -> 2 hours ago
+        LocalDateTime now = LocalDateTime.now();
+        long diff = now.toEpochSecond(null) - createdAt.toEpochSecond(null);
+        if (diff < 60) {
+            return "1 min ago";
+        } else if (diff < 3600) {
+            return diff / 60 + " mins ago";
+        } else if (diff < 7200) {
+            return "1 hour ago";
+        } else {
+            return diff / 3600 + " hours ago";
+        }
     }
 
     private Map<Long, String> getIdToNickname(List<Long> allFriendIds) {
