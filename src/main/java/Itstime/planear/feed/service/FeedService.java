@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -85,7 +86,7 @@ public class FeedService {
         //1시간 -> 1 hour ago
         //2시간 -> 2 hours ago
         LocalDateTime now = LocalDateTime.now();
-        long diff = now.toEpochSecond(null) - createdAt.toEpochSecond(null);
+        long diff = now.toEpochSecond(ZoneOffset.UTC) - createdAt.toEpochSecond(ZoneOffset.UTC);
         if (diff < 60) {
             return "1 min ago";
         } else if (diff < 3600) {
