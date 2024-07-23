@@ -72,7 +72,7 @@ public class FeedService {
                                             .stream()
                                             .map(it -> toFeedWearingResponse(it, itemIdToUrl))
                                             .toList(),
-                                    FeedStatusMessageResponse.from(statusMessageService.getStatusResponse(memberId, messageType)),
+                                    FeedStatusMessageResponse.from(statusMessageService.getStatusResponse(statusMessage.getMemberId(), messageType)),
                                     statusMessage.getCreatedAt(),
                                     formatUpdateTimeMessage(statusMessage.getCreatedAt())
                             );
