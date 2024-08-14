@@ -8,20 +8,21 @@
 Planear는 재밌는 일정 관리와 유익한 인간 관계를 실현하기 위한 서비스로, 20대 초반의 대학생을 타겟으로 일정 관리 및 목표 공유 기능을 제공합니다. 아바타를 매개로 친구와 목표 및 일정 달성률을 공유하며, 코인을 모아 아바타를 꾸미며 동기부여를 얻을 수 있습니다.
 
 ## 주요 기능 소개
+
 ### 일정의 먼슬리 위클리 조회 기능
-<img width="600" alt="image" src="https://github.com/user-attachments/assets/625fda9f-1852-4e03-9829-35268249b80a">
+![image](https://github.com/user-attachments/assets/625fda9f-1852-4e03-9829-35268249b80a)
 
 ### 일정 추가, 일정 상세 조회 및 수정 기능
-<img width="600" alt="image" src="https://github.com/user-attachments/assets/fcf19725-f44d-4c8f-969f-95c525aa88e5">
+![image](https://github.com/user-attachments/assets/fcf19725-f44d-4c8f-969f-95c525aa88e5)
 
 ### 내 아바타 및 상태 메세지 조회 기능 | 내 아바타를 꾸미기 위한 아이템 조회 기능
-<img width="600" alt="image" src="https://github.com/user-attachments/assets/aeaf46e7-7e1d-423a-862e-f36009cc3a86">
+![image](https://github.com/user-attachments/assets/aeaf46e7-7e1d-423a-862e-f36009cc3a86)
 
 ### 상태 메세지 설정
-<img width="600" alt="image" src="https://github.com/user-attachments/assets/bca71d72-9240-4d77-ac4a-6879a81c304e">
+![image](https://github.com/user-attachments/assets/bca71d72-9240-4d77-ac4a-6879a81c304e)
 
 ### 친구 추가 | 소셜 메뉴 화면
-<img width="600" alt="image" src="https://github.com/user-attachments/assets/fa7ea4b4-f7fd-4008-b994-9d747d493ba8">
+![image](https://github.com/user-attachments/assets/fa7ea4b4-f7fd-4008-b994-9d747d493ba8)
 
 ## 아키텍처
 ![image](https://github.com/user-attachments/assets/afeb56e5-f132-4446-8b67-c74af172a3ce)
