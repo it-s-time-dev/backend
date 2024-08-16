@@ -11,21 +11,30 @@ Planear는 재밌는 일정 관리와 유익한 인간 관계를 실현하기 �
 
 ### 일정의 먼슬리 위클리 조회 기능
 ![image](https://github.com/user-attachments/assets/625fda9f-1852-4e03-9829-35268249b80a)
-
+사용자는 월간 및 주간 단위로 일정을 손쉽게 조회할 수 있습니다. 이를 통해 특정 기간 동안의 일정을 한눈에 파악하고, 중요한 일정을 빠뜨리지 않도록 관리할 수 있습니다.
 ### 일정 추가, 일정 상세 조회 및 수정 기능
 ![image](https://github.com/user-attachments/assets/fcf19725-f44d-4c8f-969f-95c525aa88e5)
-
+새로운 일정을 추가하고 기존 일정을 상세히 조회할 수 있습니다. 또한, 일정 변경이 필요할 때는 쉽게 수정할 수 있는 기능을 제공합니다. 사용자는 이를 통해 자신의 일정을 더욱 유연하게 관리할 수 있습니다.
 ### 내 아바타 및 상태 메세지 조회 기능 | 내 아바타를 꾸미기 위한 아이템 조회 기능
 ![image](https://github.com/user-attachments/assets/aeaf46e7-7e1d-423a-862e-f36009cc3a86)
-
+사용자는 자신의 아바타와 상태 메시지를 조회할 수 있으며, 이를 통해 친구들과 현재 상태를 쉽게 공유할 수 있습니다. 또한, 아바타를 꾸미기 위한 다양한 아이템을 조회하고 구매하여, 아바타를 꾸미는 재미를 느낄 수 있습니다.
 ### 상태 메세지 설정
 ![image](https://github.com/user-attachments/assets/bca71d72-9240-4d77-ac4a-6879a81c304e)
-
+사용자는 자신의 상태 메시지를 설정하여 현재 기분이나 상태를 표현할 수 있습니다. 이를 통해 친구들과 더 쉽게 소통하고 목표 달성을 공유할 수 있는 환경을 제공합니다.
 ### 친구 추가 | 소셜 메뉴 화면
 ![image](https://github.com/user-attachments/assets/fa7ea4b4-f7fd-4008-b994-9d747d493ba8)
-
+친구를 추가하고 소셜 메뉴를 통해 서로의 목표와 일정을 공유할 수 있습니다. 이를 통해 친구들과의 일정과 목표를 연동하고, 함께 성취감을 느낄 수 있습니다.
 ## 아키텍처
 ![image](https://github.com/user-attachments/assets/afeb56e5-f132-4446-8b67-c74af172a3ce)
+
+## 기술스택
+- **Backend**: Java, Spring Boot, Spring Data JPA
+- **Database**: MySQL 
+- **Logging**: Logback
+- **Monitoring**: Prometheus, Grafana
+- **Cloud**: AWS EC2, S3, RDS
+- **Build/CI**: Gradle, GitHub Actions (Self hosted runner)
+- **Testing**: JUnit
 
 ## 팀원 소개
 
